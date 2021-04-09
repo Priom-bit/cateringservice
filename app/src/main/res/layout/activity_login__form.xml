@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="30dp"
+    tools:context=".Login_Form">
+    
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+    
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:src="@drawable/login_icon"
+        android:padding="30dp"/>
+
+    <EditText
+        android:id="@+id/loginemailid"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20sp"
+        android:ems="10"
+        android:hint="Email"
+        android:inputType="text"
+        android:textColor="@color/primaryTextColor"
+        android:textSize="15sp" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/etPasswordLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:passwordToggleEnabled="true">
+
+        <EditText
+            android:id="@+id/loginPasswordid"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Password"
+            android:textSize="15sp"
+            android:inputType="textPassword"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+<!--    <EditText-->
+<!--        android:id="@+id/loginpassid"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginBottom="20sp"-->
+<!--        android:ems="10"-->
+<!--        android:hint="Password"-->
+<!--        android:inputType="textPassword"-->
+<!--        android:textColor="@color/primaryTextColor"-->
+<!--        android:textSize="21sp"-->
+<!--        android:drawableRight=""/>-->
+
+    <Button
+        android:id="@+id/loginloginid"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/button_rounded"
+        android:text="Login"
+        android:textColor="@color/cardview_light_background"
+        android:textSize="15sp"
+        android:onClick="btnLoginClicked"/>
+
+
+    <Button
+        android:id="@+id/loginregisterid"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/button_rounded"
+        android:onClick="btn_signupForm"
+        android:text="Register"
+        android:textColor="@color/cardview_light_background"
+        android:textSize="15dp" />
+
+</LinearLayout>
+
+    </ScrollView>
+</LinearLayout>
