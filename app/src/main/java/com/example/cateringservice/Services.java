@@ -11,15 +11,14 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.List;
 import java.util.Map;
 
 public class Services {
     private final String TAG = Services.class.getSimpleName();
     FirebaseFirestore database = FirebaseFirestore.getInstance();
-//    FireStoreCompletionListener listener;
 
     private Services() {
-        //listener = null;
         Log.v(TAG, "Nirob test constructor created");
     }
     private static final Services instance = new Services();
@@ -32,10 +31,6 @@ public class Services {
         void onPostSuccess();
         void onFailure(String error);
     }
-
-//    public void setListener(FireStoreCompletionListener _listener) {
-//        listener = _listener;
-//    }
 
     public void getRequest(String collectionName, Map<String, String> param1, Map<String, String> param2, int limit, FireStoreCompletionListener listener) {
         String key1 = "", value1 = "", key2 = "", value2 = "";
@@ -71,6 +66,30 @@ public class Services {
                 listener.onFailure(e.getLocalizedMessage());
             });
         }
+    }
+
+    public void getRequest(String collectionName, int limit, FireStoreCompletionListener listener) {
+        database.collection(collectionName)
+                .limit(limit)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    listener.onGetSuccess(queryDocumentSnapshots);
+                }).addOnFailureListener(e -> {
+            listener.onFailure(e.getLocalizedMessage());
+        });
+    }
+
+    public void getRequest(String collectionName, String fieldName, List<Integer> values, int limit, FireStoreCompletionListener listener) {
+        Log.v(TAG, "Nirob test values: " + values.toString());
+        database.collection(collectionName)
+                .whereIn(fieldName, values)
+                .limit(limit)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    listener.onGetSuccess(queryDocumentSnapshots);
+                }).addOnFailureListener(e -> {
+            listener.onFailure(e.getLocalizedMessage());
+        });
     }
 
     public void postRequest(String collectionName, Map<String, Object> user, FireStoreCompletionListener listener) {

@@ -25,7 +25,12 @@ import android.widget.TextView;
 
 import com.denzcoskun.imageslider.ImageSlider;
 import com.denzcoskun.imageslider.models.SlideModel;
+import com.example.cateringservice.models.DiscountProduct;
+import com.example.cateringservice.models.ProductInfo;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.kaopiz.kprogresshud.KProgressHUD;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +40,12 @@ public class HomeActivity extends AppCompatActivity {
 
     DrawerLayout drawerLayout;
     ListView listView;
+    ImageSlider imageSlider;
+
+    KProgressHUD progressHUD;
+
+    List<DiscountProduct> productInfoList;
+    List<SlideModel> slideModels;
     String mTitle[]={"Drinks","Breakfast","Lunch"};
     String mDescription[]={"Drinks Description","Breakfast Description","Lunch Description"};
     int images[]={R.drawable.drinks,R.drawable.breakfast,R.drawable.lunch};
@@ -45,20 +56,8 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
 
         drawerLayout=findViewById(R.id.homeDrawerLayoutId);
-        ImageSlider imageSlider = findViewById(R.id.slider);
-
-        List<SlideModel> slideModels =new ArrayList<>();
-        slideModels.add(new SlideModel(R.drawable.burger_slider,"50% OFF"));
-        slideModels.add(new SlideModel(R.drawable.shawarma_slider,"BUY 1 GET 1 OFFER"));
-        slideModels.add(new SlideModel(R.drawable.pizza_slider,"20% OFF"));
-        imageSlider.setImageList(slideModels,true);
-        imageSlider.stopSliding();
-
-        imageSlider.setVisibility(View.VISIBLE);
-
-        Log.v(TAG, "Testing Home");
-
-
+        imageSlider = findViewById(R.id.slider);
+        slideModels = new ArrayList<>();
         listView=findViewById(R.id.listView);
 
         MyAdapter adapter=new MyAdapter(this,mTitle,mDescription,images);
@@ -87,6 +86,90 @@ public class HomeActivity extends AppCompatActivity {
 //        cartButton.setOnClickListener(v -> {
 //            //startActivity(new Intent(getApplicationContext(), LunchDetails.class));
 //        });
+
+        loadDiscountProducts();
+    }
+
+    private void loadDiscountProducts() {
+        progressHUD = KProgressHUD.create(HomeActivity.this)
+                .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
+                .setLabel("Please wait!")
+                .setDetailsLabel("Checking Login Data!")
+                .setCancellable(true)
+                .setAnimationSpeed(2)
+                .setDimAmount(0.5f)
+                .show();
+
+        productInfoList = new ArrayList<>();
+
+        Services.getInstance().getRequest("discountProducts", 10, new Services.FireStoreCompletionListener() {
+            @Override
+            public void onGetSuccess(QuerySnapshot querySnapshots) {
+                Log.v(TAG, "Nirob test 1 size: " + querySnapshots.size());
+                List<DocumentSnapshot> documentSnapshotList = querySnapshots.getDocuments();
+                for (DocumentSnapshot documentSnapshot : documentSnapshotList) {
+                    DiscountProduct discountProduct = DiscountProduct.getDiscountProductFrom(documentSnapshot);
+                    productInfoList.add(discountProduct);
+                }
+                Log.v(TAG, "Nirob test 2 size: " + productInfoList.size() + " values: " + productInfoList.toString());
+                loadProductInfo();
+            }
+
+            @Override
+            public void onPostSuccess() {
+
+            }
+
+            @Override
+            public void onFailure(String error) {
+                progressHUD.dismiss();
+            }
+        });
+    }
+
+    private void loadProductInfo() {
+        List<Integer> productIds = new ArrayList<>();
+        for (DiscountProduct discountProduct : productInfoList) {
+            productIds.add(discountProduct.id);
+        }
+        Services.getInstance().getRequest("productInfo", "id", productIds, 10, new Services.FireStoreCompletionListener() {
+            @Override
+            public void onGetSuccess(QuerySnapshot querySnapshots) {
+                progressHUD.dismiss();
+                Log.v(TAG, "Nirob test data: " + querySnapshots.size());
+                int index = 0;
+                for (DocumentSnapshot documentSnapshot : querySnapshots) {
+                    Log.v(TAG,"Nirob test refId: " + documentSnapshot.getId());
+                    ProductInfo productInfo = ProductInfo.getProductInfoFrom(documentSnapshot);
+                    DiscountProduct discountProduct = productInfoList.get(index);
+                    discountProduct.productInfo = productInfo;
+                    productInfoList.set(index, discountProduct);
+                    index++;
+                }
+                loadTopSlider();
+            }
+
+            @Override
+            public void onPostSuccess() {
+
+            }
+
+            @Override
+            public void onFailure(String error) {
+                progressHUD.dismiss();
+            }
+        });
+    }
+
+    private void loadTopSlider() {
+        slideModels.clear();
+
+        for (DiscountProduct discountProduct : productInfoList) {
+            SlideModel slideModel = new SlideModel(discountProduct.productInfo.imageUrl, discountProduct.title);
+            slideModels.add(slideModel);
+        }
+        imageSlider.setImageList(slideModels,true);
+        imageSlider.stopSliding();
     }
 
     public void ClickMenu(View view){
