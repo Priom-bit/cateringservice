@@ -103,8 +103,6 @@ public class Login_Form extends AppCompatActivity {
 
     public void btn_signupForm(View view) {
         startActivity(new Intent(getApplicationContext(),Signup_Form.class));
-        //startActivity(new Intent(getApplicationContext(),NavigationDrawer.class));
-        //saveUserDataToFirestore();
     }
 
 
@@ -117,33 +115,38 @@ public class Login_Form extends AppCompatActivity {
                 .setAnimationSpeed(2)
                 .setDimAmount(0.5f)
                 .show();
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("users")
-                .whereEqualTo("email", emailField.getText().toString())
-                .whereEqualTo("password", passwordField.getText().toString())
-                .limit(1)
-                .get()
-                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                    @Override
-                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                        Log.v(TAG, "Testing email exists: " + queryDocumentSnapshots.size());
-                        if (queryDocumentSnapshots.size() <= 0) {
-                            progressHUD.dismiss();
-                            Toast.makeText(getApplicationContext(), "Email or password mismatch!", Toast.LENGTH_SHORT).show();
-                        }
-                        else {
-                            progressHUD.dismiss();
-                            loginSuccessfull();
-                        }
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.v(TAG, "Testing email does not exists");
-                        Toast.makeText(getApplicationContext(), "Error occured: " + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
+
+        Map<String, String> param1 = new HashMap<>();
+        param1.put("email", emailField.getText().toString());
+
+        Map<String, String> param2 = new HashMap<>();
+        param2.put("password", passwordField.getText().toString());
+
+        Services.getInstance().getRequest("users", param1, param2, 1, new Services.FireStoreCompletionListener() {
+            @Override
+            public void onGetSuccess(QuerySnapshot querySnapshots) {
+                Log.v(TAG, "Testing email exists: " + querySnapshots.size());
+                if (querySnapshots.size() <= 0) {
+                    progressHUD.dismiss();
+                    Toast.makeText(getApplicationContext(), "Email or password mismatch!", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    progressHUD.dismiss();
+                    loginSuccessfull();
+                }
+            }
+
+            @Override
+            public void onPostSuccess() {
+
+            }
+
+            @Override
+            public void onFailure(String error) {
+                Log.v(TAG, "Testing email does not exists");
+                Toast.makeText(getApplicationContext(), "Error occured: " + error, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     public void loginSuccessfull() {
