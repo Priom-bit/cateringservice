@@ -54,7 +54,7 @@ public class HomeActivity extends AppCompatActivity {
         imageSlider.setImageList(slideModels,true);
         imageSlider.stopSliding();
 
-        imageSlider.setVisibility(View.INVISIBLE);
+        imageSlider.setVisibility(View.VISIBLE);
 
         Log.v(TAG, "Testing Home");
 
