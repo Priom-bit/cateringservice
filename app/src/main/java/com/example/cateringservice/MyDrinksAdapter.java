@@ -11,12 +11,18 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.cateringservice.models.ProductInfo;
+import com.squareup.picasso.Picasso;
+
+import java.net.URL;
+import java.util.List;
+
 public class MyDrinksAdapter extends RecyclerView.Adapter<MyDrinksAdapter.ViewHolder> {
-    MyDrinksDescription[] myDrinksDescription;
+    List<ProductInfo> productInfoList;
     Context context;
 
-    public MyDrinksAdapter(MyDrinksDescription[]myDrinksDescriptions, DrinksDetails activity) {
-        this.myDrinksDescription=myDrinksDescriptions;
+    public MyDrinksAdapter(List<ProductInfo> _productInfoList, DrinksDetails activity) {
+        this.productInfoList = _productInfoList;
         this.context=activity;
     }
 
@@ -31,25 +37,25 @@ public class MyDrinksAdapter extends RecyclerView.Adapter<MyDrinksAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        final MyDrinksDescription myDrinksDescriptionList=myDrinksDescription[position];
-        holder.textViewName.setText(myDrinksDescriptionList.getDrinksName());
-        holder.textViewdescription.setText(myDrinksDescriptionList.getDrinksDescription());
-        holder.drinksImage.setImageResource(myDrinksDescriptionList.getDrinksImage());
-        holder.textViewDrinkPrice.setText(myDrinksDescriptionList.getDrinksprice().toString());
+        final ProductInfo productInfo = productInfoList.get(position);
+        holder.textViewName.setText(productInfo.productName);
+        holder.textViewdescription.setText(productInfo.description);
+        //holder.drinksImage.setImageResource();
+        Picasso.get().load(productInfo.imageUrl).into(holder.drinksImage);
+        holder.textViewDrinkPrice.setText(productInfo.price.toString());
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context,myDrinksDescriptionList.getDrinksName(),Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, productInfo.productName,Toast.LENGTH_SHORT).show();
             }
         });
-
 
     }
 
     @Override
     public int getItemCount() {
-        return myDrinksDescription.length;
+        return productInfoList.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
