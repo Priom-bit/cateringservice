@@ -17,7 +17,7 @@ public class LunchDetails extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         MyLunchDescription[] myLunchDescription=new MyLunchDescription[]{
-                new MyLunchDescription("BEEF_BIRIYANI","layered rice and meat dish",R.drawable.beef_biriyani,100),
+                new MyLunchDescription("BEEF_BIRIYANI","layered rice and meat dish",R.drawable.beef_biriyani,180),
                 new MyLunchDescription("TEHERI","yellow rice dish in Awadhi cuisine",R.drawable.teheri, 70),
                 new MyLunchDescription("CHINESE_VEGETABLE"," sweet flavor and crisp texture",R.drawable.chinese_vegetable,150),
                 new MyLunchDescription("MOROG_POLAO","Bengali Chicken & Basmati Rice",R.drawable.morog_polao,100),

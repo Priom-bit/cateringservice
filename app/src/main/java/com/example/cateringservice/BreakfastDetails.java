@@ -23,7 +23,7 @@ public class BreakfastDetails extends AppCompatActivity {
                 new MyBreakfastDescription("BISCUITS","any of various hard or crisp dry baked product",R.drawable.biscuits,20),
                 new MyBreakfastDescription("BREAD_PUDDING"," In a small saucepan over low heat, warm milk, butter, vanilla, sugar and salt",R.drawable.bread_pudding,60),
                 new MyBreakfastDescription("CHEESE_SANDWICH","simple and basic sandwich made by placing cheese in between 2 buttered slices of bread",R.drawable.cheese_sandwich,120),
-                new MyBreakfastDescription("EGG_PARATHA"," spicy. egg stuffed, protein-packed, whole-wheat paratha recipe for breakfast",R.drawable.egg_paratha,40),
+                new MyBreakfastDescription("EGG_PARATHA"," spicy. egg stuffed, protein-packed, whole-wheat paratha recipe for breakfast",R.drawable.egg_paratha,30),
         };
 
         MyBreakfastAdapter myBreakfastAdapter = new MyBreakfastAdapter(myBreakfastDescription, BreakfastDetails.this);

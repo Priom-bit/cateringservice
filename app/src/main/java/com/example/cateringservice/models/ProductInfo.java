@@ -14,9 +14,9 @@ public class ProductInfo {
     public static ProductInfo getProductInfoFrom(DocumentSnapshot documentSnapshot) {
         ProductInfo productInfo = new ProductInfo();
         productInfo.id = documentSnapshot.getLong("id").intValue();
-        productInfo.productName = documentSnapshot.getString("productName");
+        productInfo.productName = documentSnapshot.getString("productname");
         productInfo.description = documentSnapshot.getString("description");
-        productInfo.imageUrl = documentSnapshot.getString("imageUrl");
+        productInfo.imageUrl = documentSnapshot.getString("imageurl");
         productInfo.price = documentSnapshot.getLong("price").intValue();
         productInfo.discount = documentSnapshot.getLong("discount").intValue();
         productInfo.size = documentSnapshot.getString("size");
