@@ -87,6 +87,26 @@ public class Services {
         });
     }
 
+    public void getRequestGreaterLess(String collectionName, String fieldName, Integer value1, Integer value2, int limit, FireStoreCompletionListener listener) {
+        database.collection(collectionName)
+                .whereGreaterThanOrEqualTo(fieldName, value1)
+                .whereLessThanOrEqualTo(fieldName, value2)
+                .limit(limit)
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot querySnapshot) {
+                        listener.onGetSuccess(querySnapshot);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        listener.onFailure(e.getLocalizedMessage());
+                    }
+                });
+    }
+
     public void getRequest(String collectionName, int limit, FireStoreCompletionListener listener) {
         database.collection(collectionName)
                 .limit(limit)
