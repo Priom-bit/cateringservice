@@ -16,18 +16,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.denzcoskun.imageslider.ImageSlider;
 import com.denzcoskun.imageslider.models.SlideModel;
-import com.example.cateringservice.models.DiscountProduct;
 import com.example.cateringservice.models.ProductInfo;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.kaopiz.kprogresshud.KProgressHUD;
@@ -44,7 +40,7 @@ public class HomeActivity extends AppCompatActivity {
 
     KProgressHUD progressHUD;
 
-    List<DiscountProduct> productInfoList;
+    List<ProductInfo> productInfoList;
     List<SlideModel> slideModels;
     String mTitle[]={"Drinks","Breakfast","Lunch"};
     String mDescription[]={"Drinks Description","Breakfast Description","Lunch Description"};
@@ -63,22 +59,19 @@ public class HomeActivity extends AppCompatActivity {
         MyAdapter adapter=new MyAdapter(this,mTitle,mDescription,images);
         listView.setAdapter(adapter);
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if(position==0) {
-                    //Toast.makeText(HomeActivity.this, "Drinks Description", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(getApplicationContext(), DrinksDetails.class));
-                }
-                else if(position==1) {
+        listView.setOnItemClickListener((parent, view, position, id) -> {
+            if(position==0) {
+                //Toast.makeText(HomeActivity.this, "Drinks Description", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(getApplicationContext(), DrinksDetails.class));
+            }
+            else if(position==1) {
 //                    Toast.makeText(HomeActivity.this, "Breakfast Description", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(getApplicationContext(), BreakfastDetails.class));
-                }
-                else if(position==2) {
-                   // Toast.makeText(HomeActivity.this, "Lunch Description", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(getApplicationContext(), LunchDetails.class));
+                startActivity(new Intent(getApplicationContext(), BreakfastDetails.class));
+            }
+            else if(position==2) {
+               // Toast.makeText(HomeActivity.this, "Lunch Description", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(getApplicationContext(), LunchDetails.class));
 
-                }
             }
         });
 
@@ -102,7 +95,7 @@ public class HomeActivity extends AppCompatActivity {
 
         productInfoList = new ArrayList<>();
 
-        Services.getInstance().getRequest("discountProducts", 10, new Services.FireStoreCompletionListener() {
+        /*Services.getInstance().getRequest("discountProducts", 10, new Services.FireStoreCompletionListener() {
             @Override
             public void onGetSuccess(QuerySnapshot querySnapshots) {
                 Log.v(TAG, "Nirob test 1 size: " + querySnapshots.size());
@@ -124,11 +117,12 @@ public class HomeActivity extends AppCompatActivity {
             public void onFailure(String error) {
                 progressHUD.dismiss();
             }
-        });
+        });*/
+        loadProductInfo();
     }
 
     private void loadProductInfo() {
-        List<Integer> productIds = new ArrayList<>();
+        /*List<Integer> productIds = new ArrayList<>();
         for (DiscountProduct discountProduct : productInfoList) {
             productIds.add(discountProduct.id);
         }
@@ -158,18 +152,54 @@ public class HomeActivity extends AppCompatActivity {
             public void onFailure(String error) {
                 progressHUD.dismiss();
             }
+        });*/
+        Services.getInstance().getRequestGreaterThanOrEqual("productInfo", "discount", 0, 10, new Services.FireStoreCompletionListener() {
+            @Override
+            public void onGetSuccess(QuerySnapshot querySnapshots) {
+                progressHUD.dismiss();
+                Log.v(TAG, "Nirob test data: " + querySnapshots.size());
+                for (DocumentSnapshot documentSnapshot : querySnapshots) {
+                    Log.v(TAG,"Nirob test refId: " + documentSnapshot.getId());
+                    ProductInfo productInfo = ProductInfo.getProductInfoFrom(documentSnapshot);
+                    productInfoList.add(productInfo);
+                }
+                loadTopSlider();
+            }
+
+            @Override
+            public void onPostSuccess() {
+
+            }
+
+            @Override
+            public void onFailure(String error) {
+                progressHUD.dismiss();
+            }
         });
     }
 
     private void loadTopSlider() {
         slideModels.clear();
 
-        for (DiscountProduct discountProduct : productInfoList) {
-            SlideModel slideModel = new SlideModel(discountProduct.productInfo.imageUrl, discountProduct.title);
+        for (ProductInfo productInfo : productInfoList) {
+            SlideModel slideModel = new SlideModel(productInfo.imageUrl, getTopSliderTitle(productInfo));
             slideModels.add(slideModel);
         }
         imageSlider.setImageList(slideModels,true);
         imageSlider.stopSliding();
+    }
+
+    private String getTopSliderTitle(ProductInfo productInfo) {
+        if (productInfo.discount > 0) {
+            return getPercentageOf(productInfo.price, productInfo.discount) + "% OFF";
+        }
+        return "BUY 1 GET 1 FREE";
+    }
+
+    private int getPercentageOf(int price, int discount) {
+        float percentage = (discount*100)/20.0f;
+
+        return (int) Math.ceil(percentage);
     }
 
     public void ClickMenu(View view){

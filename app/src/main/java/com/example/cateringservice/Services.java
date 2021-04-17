@@ -16,7 +16,7 @@ import java.util.Map;
 
 public class Services {
     private final String TAG = Services.class.getSimpleName();
-    FirebaseFirestore database = FirebaseFirestore.getInstance();
+    private FirebaseFirestore database = FirebaseFirestore.getInstance();
 
     private Services() {
         Log.v(TAG, "Nirob test constructor created");
@@ -66,6 +66,25 @@ public class Services {
                 listener.onFailure(e.getLocalizedMessage());
             });
         }
+    }
+
+    public void getRequestGreaterThanOrEqual(String collectionName, String fieldName, int value, int limit, FireStoreCompletionListener listener) {
+        database.collection(collectionName)
+                .whereGreaterThanOrEqualTo(fieldName, value)
+                .limit(limit)
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot querySnapshot) {
+                        listener.onGetSuccess(querySnapshot);
+                    }
+                })
+        .addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                listener.onFailure(e.getLocalizedMessage());
+            }
+        });
     }
 
     public void getRequest(String collectionName, int limit, FireStoreCompletionListener listener) {
