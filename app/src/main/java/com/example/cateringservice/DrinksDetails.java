@@ -38,11 +38,6 @@ public class DrinksDetails extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         productInfoList = new ArrayList<>();
-                /*[]{
-                new MyDrinksDescription("COCACOLA","most selling soft drinks",R.drawable.cocacola, 30),
-                new MyDrinksDescription("SPRITE","lemon-lime flavored soft drink",R.drawable.sprite, 30),
-                new MyDrinksDescription("FANTA","Fanta Orange is a soft drink with a tingly, fruity taste",R.drawable.fanta, 30),
-        };*/
         loadDrinksData();
     }
 
