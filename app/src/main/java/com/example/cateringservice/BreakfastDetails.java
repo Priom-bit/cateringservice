@@ -5,29 +5,94 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
+
+import com.example.cateringservice.models.ProductInfo;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.kaopiz.kprogresshud.KProgressHUD;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class BreakfastDetails extends AppCompatActivity {
+    private final String TAG = BreakfastDetails.class.getSimpleName();
+
+    RecyclerView recyclerView;
+    TextView value;
+
+    List<ProductInfo> productInfoList;
+    int count = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_breakfast_details);
 
+        value = (TextView) findViewById(R.id.value);
+
         RecyclerView recyclerView =findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        MyBreakfastDescription[] myBreakfastDescription=new MyBreakfastDescription[]{
-                new MyBreakfastDescription("BACON"," type of salt-cured beef made from various cuts",R.drawable.bacon,70),
-                new MyBreakfastDescription("BHUNA_KHICHURI","a comfort rice dish popular in Bengali cuisine.",R.drawable.bhuna_khichuri,100),
-                new MyBreakfastDescription("BISCUITS","any of various hard or crisp dry baked product",R.drawable.biscuits,20),
-                new MyBreakfastDescription("BREAD_PUDDING"," In a small saucepan over low heat, warm milk, butter, vanilla, sugar and salt",R.drawable.bread_pudding,60),
-                new MyBreakfastDescription("CHEESE_SANDWICH","simple and basic sandwich made by placing cheese in between 2 buttered slices of bread",R.drawable.cheese_sandwich,120),
-                new MyBreakfastDescription("EGG_PARATHA"," spicy. egg stuffed, protein-packed, whole-wheat paratha recipe for breakfast",R.drawable.egg_paratha,30),
-        };
+        productInfoList = new ArrayList<>();
+        loadBreakfastData();
+    }
 
-        MyBreakfastAdapter myBreakfastAdapter = new MyBreakfastAdapter(myBreakfastDescription, BreakfastDetails.this);
+    private void loadBreakfastData() {
+        KProgressHUD progressHUD = KProgressHUD.create(BreakfastDetails.this)
+                .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
+                .setLabel("Please wait!")
+                .setDetailsLabel("Checking Login Data!")
+                .setCancellable(true)
+                .setAnimationSpeed(2)
+                .setDimAmount(0.5f)
+                .show();
+
+        Services.getInstance().getRequestGreaterLess("productInfo", "id", 101, 199, 20, new Services.FireStoreCompletionListener() {
+            @Override
+            public void onGetSuccess(QuerySnapshot querySnapshots) {
+                progressHUD.dismiss();
+                Log.v(TAG, "Nirob test drinks size: " + querySnapshots.size());
+                for (QueryDocumentSnapshot documentSnapshot : querySnapshots) {
+                    ProductInfo productInfo = ProductInfo.getProductInfoFrom(documentSnapshot);
+                    productInfoList.add(productInfo);
+                }
+                loadListView();
+            }
+
+            @Override
+            public void onPostSuccess() {
+
+            }
+
+            @Override
+            public void onFailure(String error) {
+                progressHUD.dismiss();
+            }
+        });
+    }
+
+
+
+    private void loadListView() {
+        MyBreakfastAdapter myBreakfastAdapter = new MyBreakfastAdapter(productInfoList, BreakfastDetails.this);
         recyclerView.setAdapter(myBreakfastAdapter);
 
+    }
+
+    public void incrementBtn(View v){
+
+        count++;
+        value.setText("" + count);
+    }
+
+    public void decrementBtn(View v){
+
+        if(count <= 0) count = 0;
+        else count--;
+        value.setText("" + count);
     }
 }

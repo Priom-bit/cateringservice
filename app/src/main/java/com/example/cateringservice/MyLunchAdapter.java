@@ -11,11 +11,16 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.cateringservice.models.ProductInfo;
+import com.squareup.picasso.Picasso;
+
+import java.util.List;
+
 public class MyLunchAdapter extends RecyclerView.Adapter<MyLunchAdapter.ViewHolder> {
-    MyLunchDescription[] myLunchDescription;
+    List<ProductInfo> myLunchDescription;
     Context context;
 
-    public MyLunchAdapter(MyLunchDescription[] lunchDescriptions, LunchDetails activity) {
+    public MyLunchAdapter(List<ProductInfo> lunchDescriptions, LunchDetails activity) {
         this.myLunchDescription=lunchDescriptions;
         this.context=activity;
     }
@@ -31,16 +36,16 @@ public class MyLunchAdapter extends RecyclerView.Adapter<MyLunchAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull MyLunchAdapter.ViewHolder holder, int position) {
-        final MyLunchDescription myLunchDescriptionList=myLunchDescription[position];
-        holder.textViewName.setText(myLunchDescriptionList.getLunchName());
-        holder.textViewdescription.setText(myLunchDescriptionList.getLunchDescription());
-        holder.lunchImage.setImageResource(myLunchDescriptionList.getLunchImage());
-        holder.textViewLunchPrice.setText(myLunchDescriptionList.getLunchprice().toString());
+        final ProductInfo productInfo=myLunchDescription.get(position);
+        holder.textViewName.setText(productInfo.productName);
+        holder.textViewdescription.setText(productInfo.description);
+        Picasso.get().load(productInfo.imageUrl).into(holder.lunchImage);
+        holder.textViewLunchPrice.setText(productInfo.price.toString());
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context,myLunchDescriptionList.getLunchName(),Toast.LENGTH_SHORT).show();
+                Toast.makeText(context,productInfo.productName,Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -49,7 +54,7 @@ public class MyLunchAdapter extends RecyclerView.Adapter<MyLunchAdapter.ViewHold
 
     @Override
     public int getItemCount() {
-        return myLunchDescription.length;
+        return myLunchDescription.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{

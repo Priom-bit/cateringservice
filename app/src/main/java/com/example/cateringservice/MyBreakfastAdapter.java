@@ -11,11 +11,16 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.cateringservice.models.ProductInfo;
+import com.squareup.picasso.Picasso;
+
+import java.util.List;
+
 public class MyBreakfastAdapter extends RecyclerView.Adapter<MyBreakfastAdapter.ViewHolder> {
-    MyBreakfastDescription[] myBreakfastDescription;
+    List<ProductInfo> myBreakfastDescription;
     Context context;
 
-    public MyBreakfastAdapter(MyBreakfastDescription[] breakfastDescriptions, BreakfastDetails activity) {
+    public MyBreakfastAdapter(List<ProductInfo> breakfastDescriptions, BreakfastDetails activity) {
         this.myBreakfastDescription=breakfastDescriptions;
         this.context=activity;
     }
@@ -31,16 +36,16 @@ public class MyBreakfastAdapter extends RecyclerView.Adapter<MyBreakfastAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull MyBreakfastAdapter.ViewHolder holder, int position) {
-        final MyBreakfastDescription myBreakfastDescriptionList=myBreakfastDescription[position];
-        holder.textViewName.setText(myBreakfastDescriptionList.getBreakfastName());
-        holder.textViewdescription.setText(myBreakfastDescriptionList.getBreakfastDescription());
-        holder.breakfastImage.setImageResource(myBreakfastDescriptionList.getBreakfastImage());
-        holder.textViewBreakfastPrice.setText(myBreakfastDescriptionList.getBreakfastprice().toString());
+        final ProductInfo productInfo=myBreakfastDescription.get(position);
+        holder.textViewName.setText(productInfo.productName);
+        holder.textViewdescription.setText(productInfo.description);
+        Picasso.get().load(productInfo.imageUrl).into(holder.breakfastImage);
+        holder.textViewBreakfastPrice.setText(productInfo.price.toString());
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context,myBreakfastDescriptionList.getBreakfastName(),Toast.LENGTH_SHORT).show();
+                Toast.makeText(context,productInfo.productName,Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -49,7 +54,7 @@ public class MyBreakfastAdapter extends RecyclerView.Adapter<MyBreakfastAdapter.
 
     @Override
     public int getItemCount() {
-        return myBreakfastDescription.length;
+        return myBreakfastDescription.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{

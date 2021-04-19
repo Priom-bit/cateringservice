@@ -5,29 +5,92 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
+
+import com.example.cateringservice.models.ProductInfo;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.kaopiz.kprogresshud.KProgressHUD;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class LunchDetails extends AppCompatActivity {
+    private final String TAG = LunchDetails.class.getSimpleName();
+
+    RecyclerView recyclerView;
+    TextView value;
+
+    List<ProductInfo> productInfoList;
+    int count = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lunch_details);
+
+        value = (TextView) findViewById(R.id.value);
+
         RecyclerView recyclerView =findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        MyLunchDescription[] myLunchDescription=new MyLunchDescription[]{
-                new MyLunchDescription("BEEF_BIRIYANI","layered rice and meat dish",R.drawable.beef_biriyani,180),
-                new MyLunchDescription("TEHERI","yellow rice dish in Awadhi cuisine",R.drawable.teheri, 70),
-                new MyLunchDescription("CHINESE_VEGETABLE"," sweet flavor and crisp texture",R.drawable.chinese_vegetable,150),
-                new MyLunchDescription("MOROG_POLAO","Bengali Chicken & Basmati Rice",R.drawable.morog_polao,100),
-                new MyLunchDescription("MUTTON_BIRIYANI"," layering rice over slow cooked mutton gravy",R.drawable.mutton_biriyani,120),
-                new MyLunchDescription("CHICKEN_BIRIYANI","savory chicken and rice dish that includes layers of chicken, rice, and aromatics that are steamed together",R.drawable.chicken_biriyani,110),
-                new MyLunchDescription("FRIED_RICE","stir-fried in a wok or a frying pan and is usually mixed with other ingredients such as eggs, vegetables, seafood, or meat",R.drawable.fried_rice,100),
-        };
 
-        MyLunchAdapter myLunchAdapter = new MyLunchAdapter(myLunchDescription, LunchDetails.this);
+        productInfoList = new ArrayList<>();
+        loadLunchData();
+    }
+
+    private void loadLunchData() {
+        KProgressHUD progressHUD = KProgressHUD.create(LunchDetails.this)
+                .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
+                .setLabel("Please wait!")
+                .setDetailsLabel("Checking Login Data!")
+                .setCancellable(true)
+                .setAnimationSpeed(2)
+                .setDimAmount(0.5f)
+                .show();
+
+        Services.getInstance().getRequestGreaterLess("productInfo", "id", 201, 299, 20, new Services.FireStoreCompletionListener() {
+            @Override
+            public void onGetSuccess(QuerySnapshot querySnapshots) {
+                progressHUD.dismiss();
+                Log.v(TAG, "Nirob test drinks size: " + querySnapshots.size());
+                for (QueryDocumentSnapshot documentSnapshot : querySnapshots) {
+                    ProductInfo productInfo = ProductInfo.getProductInfoFrom(documentSnapshot);
+                    productInfoList.add(productInfo);
+                }
+                loadListView();
+            }
+
+            @Override
+            public void onPostSuccess() {
+
+            }
+
+            @Override
+            public void onFailure(String error) {
+                progressHUD.dismiss();
+            }
+        });
+    }
+    private void loadListView() {
+        MyLunchAdapter myLunchAdapter = new MyLunchAdapter(productInfoList, LunchDetails.this);
         recyclerView.setAdapter(myLunchAdapter);
 
     }
+    public void incrementBtn(View v){
+
+        count++;
+        value.setText("" + count);
+    }
+
+    public void decrementBtn(View v){
+
+        if(count <= 0) count = 0;
+        else count--;
+        value.setText("" + count);
+    }
 }
+
