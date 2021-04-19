@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">CateringService</string>
+    <string name="app_name">Catering Service</string>
     <string name="title_activity_navigation_drawer">NavigationDrawerActivity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -11,4 +11,9 @@
     <string name="menu_home">Home</string>
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
+
+    <string name="drinks_title">Drinks</string>
+    <string name="breakfast_title">Breakfast</string>
+    <string name="lunch_title">Lunch</string>
+    <string name="cart_title">Cart</string>
 </resources>

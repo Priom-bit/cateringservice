@@ -21,17 +21,13 @@ public class DrinksDetails extends AppCompatActivity {
     private final String TAG = DrinksDetails.class.getSimpleName();
 
     RecyclerView recyclerView;
-    TextView value;
 
     List<ProductInfo> productInfoList;
-    int count = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drinks_details);
-
-        value = (TextView) findViewById(R.id.value);
 
         recyclerView =findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
@@ -78,18 +74,5 @@ public class DrinksDetails extends AppCompatActivity {
     private void loadListView() {
         MyDrinksAdapter myDrinksAdapter=new MyDrinksAdapter(productInfoList, DrinksDetails.this);
         recyclerView.setAdapter(myDrinksAdapter);
-    }
-
-    public void incrementBtn(View v){
-
-        count++;
-        value.setText("" + count);
-    }
-
-    public void decrementBtn(View v){
-
-        if(count <= 0) count = 0;
-        else count--;
-        value.setText("" + count);
     }
 }

@@ -25,7 +25,7 @@
                 <ImageView
                     android:layout_margin="10dp"
                     android:src="@drawable/cocacola"
-                    android:id="@+id/drinksimageView"
+                    android:id="@+id/cartimageView"
                     android:layout_width="120dp"
                     android:layout_height="150dp"/>
 
@@ -36,7 +36,7 @@
                     android:layout_height="match_parent">
 
                     <TextView
-                        android:id="@+id/drinksname"
+                        android:id="@+id/cartname"
                         android:textColor="#000"
                         android:textSize="20dp"
                         android:textStyle="bold"
@@ -46,7 +46,7 @@
                         android:layout_height="wrap_content"/>
 
                     <TextView
-                        android:id="@+id/drinksdescription"
+                        android:id="@+id/cartdescription"
                         android:layout_margin="10dp"
                         android:text="Drinks description"
                         android:layout_width="match_parent"
@@ -64,7 +64,7 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/drinksPrice"
+                    android:id="@+id/cartPrice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="10dp"

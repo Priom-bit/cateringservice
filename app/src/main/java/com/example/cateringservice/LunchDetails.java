@@ -33,7 +33,7 @@ public class LunchDetails extends AppCompatActivity {
 
         value = (TextView) findViewById(R.id.value);
 
-        RecyclerView recyclerView =findViewById(R.id.recyclerView);
+        recyclerView =findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 

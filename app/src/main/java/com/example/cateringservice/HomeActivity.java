@@ -61,15 +61,12 @@ public class HomeActivity extends AppCompatActivity {
 
         listView.setOnItemClickListener((parent, view, position, id) -> {
             if(position==0) {
-                //Toast.makeText(HomeActivity.this, "Drinks Description", Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(getApplicationContext(), DrinksDetails.class));
             }
             else if(position==1) {
-//                    Toast.makeText(HomeActivity.this, "Breakfast Description", Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(getApplicationContext(), BreakfastDetails.class));
             }
             else if(position==2) {
-               // Toast.makeText(HomeActivity.this, "Lunch Description", Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(getApplicationContext(), LunchDetails.class));
 
             }
@@ -95,64 +92,10 @@ public class HomeActivity extends AppCompatActivity {
 
         productInfoList = new ArrayList<>();
 
-        /*Services.getInstance().getRequest("discountProducts", 10, new Services.FireStoreCompletionListener() {
-            @Override
-            public void onGetSuccess(QuerySnapshot querySnapshots) {
-                Log.v(TAG, "Nirob test 1 size: " + querySnapshots.size());
-                List<DocumentSnapshot> documentSnapshotList = querySnapshots.getDocuments();
-                for (DocumentSnapshot documentSnapshot : documentSnapshotList) {
-                    DiscountProduct discountProduct = DiscountProduct.getDiscountProductFrom(documentSnapshot);
-                    productInfoList.add(discountProduct);
-                }
-                Log.v(TAG, "Nirob test 2 size: " + productInfoList.size() + " values: " + productInfoList.toString());
-                loadProductInfo();
-            }
-
-            @Override
-            public void onPostSuccess() {
-
-            }
-
-            @Override
-            public void onFailure(String error) {
-                progressHUD.dismiss();
-            }
-        });*/
         loadProductInfo();
     }
 
     private void loadProductInfo() {
-        /*List<Integer> productIds = new ArrayList<>();
-        for (DiscountProduct discountProduct : productInfoList) {
-            productIds.add(discountProduct.id);
-        }
-        Services.getInstance().getRequest("productInfo", "id", productIds, 10, new Services.FireStoreCompletionListener() {
-            @Override
-            public void onGetSuccess(QuerySnapshot querySnapshots) {
-                progressHUD.dismiss();
-                Log.v(TAG, "Nirob test data: " + querySnapshots.size());
-                int index = 0;
-                for (DocumentSnapshot documentSnapshot : querySnapshots) {
-                    Log.v(TAG,"Nirob test refId: " + documentSnapshot.getId());
-                    ProductInfo productInfo = ProductInfo.getProductInfoFrom(documentSnapshot);
-                    DiscountProduct discountProduct = productInfoList.get(index);
-                    discountProduct.productInfo = productInfo;
-                    productInfoList.set(index, discountProduct);
-                    index++;
-                }
-                loadTopSlider();
-            }
-
-            @Override
-            public void onPostSuccess() {
-
-            }
-
-            @Override
-            public void onFailure(String error) {
-                progressHUD.dismiss();
-            }
-        });*/
         Services.getInstance().getRequestGreaterThanOrEqual("productInfo", "discount", 0, 10, new Services.FireStoreCompletionListener() {
             @Override
             public void onGetSuccess(QuerySnapshot querySnapshots) {

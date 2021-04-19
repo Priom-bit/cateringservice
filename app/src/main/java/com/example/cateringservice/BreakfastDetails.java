@@ -31,9 +31,9 @@ public class BreakfastDetails extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_breakfast_details);
 
-        value = (TextView) findViewById(R.id.value);
+        value = findViewById(R.id.value);
 
-        RecyclerView recyclerView =findViewById(R.id.recyclerView);
+        recyclerView =findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
