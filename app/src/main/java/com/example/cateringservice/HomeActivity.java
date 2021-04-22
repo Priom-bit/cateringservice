@@ -78,6 +78,10 @@ public class HomeActivity extends AppCompatActivity {
 //            //startActivity(new Intent(getApplicationContext(), LunchDetails.class));
 //        });
 
+        AppManager.getInstance().setUserProfile(getApplicationContext());
+
+        TextView navEmailText = findViewById(R.id.nav_drawer_email_id);
+        navEmailText.setText(AppManager.getInstance().userProfile.email);
         loadDiscountProducts();
     }
 

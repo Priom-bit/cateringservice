@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
 import com.example.cateringservice.manager.AppManager;
 
@@ -24,6 +25,9 @@ public class AboutUs extends AppCompatActivity {
         setContentView(R.layout.activity_about_us);
 
         drawerLayout=findViewById(R.id.about_us_drawer_layout);
+
+        TextView navEmailText = findViewById(R.id.nav_drawer_email_id);
+        navEmailText.setText(AppManager.getInstance().userProfile.email);
     }
 
     public void ClickMenu(View view){

@@ -24,6 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.cateringservice.manager.AppManager;
+import com.example.cateringservice.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -132,6 +133,8 @@ public class Login_Form extends AppCompatActivity {
                 }
                 else {
                     progressHUD.dismiss();
+                    User user = User.getUserFrom(querySnapshots.getDocuments().get(0));
+                    AppManager.getInstance().saveUserInfo(getApplicationContext(), user);
                     loginSuccessfull();
                 }
             }
