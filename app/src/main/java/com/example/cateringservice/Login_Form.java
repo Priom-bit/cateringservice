@@ -23,6 +23,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.cateringservice.manager.AppManager;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -38,7 +39,6 @@ import java.util.Map;
 
 public class Login_Form extends AppCompatActivity {
     private static final String TAG = Login_Form.class.getSimpleName();
-    public static final String MyPREFERENCES = "MyPrefs" ;
     EditText emailField;
     EditText passwordField;
     Button loginButton;
@@ -151,9 +151,7 @@ public class Login_Form extends AppCompatActivity {
 
     public void loginSuccessfull() {
         startActivity(new Intent(getApplicationContext(), HomeActivity.class));
-        SharedPreferences.Editor editor = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE).edit();
-        editor.putBoolean("LoggedInKey", true);
-        editor.apply();
+        AppManager.getInstance().setLogIn(getApplicationContext());
     }
 
     public boolean isValidEmail(CharSequence target) {

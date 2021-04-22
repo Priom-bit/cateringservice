@@ -41,14 +41,14 @@
                         android:textSize="20dp"
                         android:textStyle="bold"
                         android:layout_margin="10dp"
-                        android:text="Drinks name"
+                        android:text="Cart name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
 
                     <TextView
                         android:id="@+id/cartdescription"
                         android:layout_margin="10dp"
-                        android:text="Drinks description"
+                        android:text="Cart description"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
 
@@ -75,7 +75,7 @@
                     android:layout_height="0dp"
                     android:layout_weight="1"/>
                 <ImageButton
-                    android:id="@+id/decrementBtn"
+                    android:id="@+id/cartDecrementBtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
@@ -83,13 +83,14 @@
                     android:src="@drawable/ic_baseline_remove_black"/>
 
                 <TextView
+                    android:id="@+id/numberOfCartProducts"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="10dp"
                     android:text="0" />
 
                 <ImageButton
-                    android:id="@+id/incrementBtn"
+                    android:id="@+id/cartIncrementBtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
@@ -100,21 +101,15 @@
                     android:layout_height="0dp"
                     android:layout_weight="1"/>
                 <TextView
+                    android:id="@+id/cartTotalPrice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="10dp"
-                    android:text="Final Price"
+                    android:text="0 tk"
                     />
 
             </LinearLayout>
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:background="@color/colorPrimaryDark"
-                android:text="Next"
-                android:textColor="@android:color/white"
-                android:textSize="20dp"/>
+
 
         </LinearLayout>
 

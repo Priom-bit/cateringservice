@@ -21,17 +21,15 @@ public class LunchDetails extends AppCompatActivity {
     private final String TAG = LunchDetails.class.getSimpleName();
 
     RecyclerView recyclerView;
-    TextView value;
 
     List<ProductInfo> productInfoList;
-    int count = 0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lunch_details);
 
-        value = (TextView) findViewById(R.id.value);
 
         recyclerView =findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
@@ -79,18 +77,7 @@ public class LunchDetails extends AppCompatActivity {
         MyLunchAdapter myLunchAdapter = new MyLunchAdapter(productInfoList, LunchDetails.this);
         recyclerView.setAdapter(myLunchAdapter);
 
-    }
-    public void incrementBtn(View v){
 
-        count++;
-        value.setText("" + count);
-    }
-
-    public void decrementBtn(View v){
-
-        if(count <= 0) count = 0;
-        else count--;
-        value.setText("" + count);
     }
 }
 

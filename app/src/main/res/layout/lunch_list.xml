@@ -49,7 +49,7 @@
                 <TextView
                     android:id="@+id/lunchdescription"
                     android:layout_margin="10dp"
-                    android:text="Lunch description"
+                    android:text="Lunch Description"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
 
@@ -77,7 +77,7 @@
                     android:layout_height="0dp"
                     android:layout_weight="1"/>
                 <ImageButton
-                    android:id="@+id/decrementBtn"
+                    android:id="@+id/lunchdecrementBtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
@@ -85,14 +85,14 @@
                     android:src="@drawable/ic_baseline_remove_black"/>
 
                 <TextView
-                    android:id="@+id/value"
+                    android:id="@+id/numberOfLunchProducts"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="10dp"
                     android:text="0" />
 
                 <ImageButton
-                    android:id="@+id/incrementBtn"
+                    android:id="@+id/lunchincrementBtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
@@ -103,10 +103,11 @@
                     android:layout_height="0dp"
                     android:layout_weight="1"/>
                 <TextView
+                    android:id="@+id/lunchTotalPrice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="10dp"
-                    android:text="Final Price"
+                    android:text="0"
                     />
 
 

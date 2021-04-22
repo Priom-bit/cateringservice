@@ -26,26 +26,31 @@
     </com.denzcoskun.imageslider.ImageSlider>
    <RelativeLayout
        android:layout_width="match_parent"
-       android:layout_height="wrap_content">
+       android:layout_height="wrap_content"
+       android:layout_marginBottom="0dp">
        <ListView
            android:layout_width="match_parent"
            android:layout_height="match_parent"
-           android:id="@+id/listView"
-           >
+           android:id="@+id/listView">
        </ListView>
-       <com.google.android.material.floatingactionbutton.FloatingActionButton
-           android:id="@+id/home_cart_button"
-           android:layout_width="100dp"
-           android:layout_height="100dp"
+       <RelativeLayout
+           android:layout_width="150dp"
+           android:layout_height="150dp"
            android:layout_alignParentRight="true"
-           android:layout_alignParentBottom="true"
-           android:layout_marginVertical="@dimen/activity_vertical_margin"
-           android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
-           android:background="@color/colorPrimaryDark"
-           android:src="@drawable/cart_gray"
-           android:contentDescription="cart"
-           android:layout_alignParentEnd="true"
-           android:onClick="cartButtonClicked"/>
+           android:layout_alignParentBottom="true">
+           <com.google.android.material.floatingactionbutton.FloatingActionButton
+               android:id="@+id/home_cart_button"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:layout_alignParentRight="true"
+               android:layout_alignParentBottom="true"
+               android:layout_marginBottom="20dp"
+               android:layout_marginRight="20dp"
+               android:background="@color/colorPrimaryDark"
+               android:src="@drawable/cart_gray"
+               android:contentDescription="cart"
+               android:onClick="cartButtonClicked" />
+       </RelativeLayout>
    </RelativeLayout>
     </LinearLayout>
 

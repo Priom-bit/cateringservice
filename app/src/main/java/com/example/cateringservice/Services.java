@@ -19,7 +19,7 @@ public class Services {
     private FirebaseFirestore database = FirebaseFirestore.getInstance();
 
     private Services() {
-        Log.v(TAG, "Nirob test constructor created");
+        Log.v(TAG, "Services constructor created");
     }
     private static final Services instance = new Services();
     public static Services getInstance() {

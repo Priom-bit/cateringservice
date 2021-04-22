@@ -22,8 +22,8 @@ public class MyDrinksAdapter extends RecyclerView.Adapter<MyDrinksAdapter.ViewHo
     List<ProductInfo> productInfoList;
     Context context;
 
-    public MyDrinksAdapter(List<ProductInfo> _productInfoList, DrinksDetails activity) {
-        this.productInfoList = _productInfoList;
+    public MyDrinksAdapter(List<ProductInfo> productInfoList, DrinksDetails activity) {
+        this.productInfoList = productInfoList;
         this.context=activity;
     }
 
@@ -41,7 +41,7 @@ public class MyDrinksAdapter extends RecyclerView.Adapter<MyDrinksAdapter.ViewHo
         final ProductInfo productInfo = productInfoList.get(position);
         holder.textViewName.setText(productInfo.productName);
         holder.textViewdescription.setText(productInfo.description);
-        Picasso.get().load(productInfo.imageUrl).into(holder.drinksImage);
+        Picasso.get().load(productInfo.imageUrl).placeholder(R.drawable.loading_animated).into(holder.drinksImage);
         holder.textViewDrinkPrice.setText(productInfo.price.toString() + " tk");
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {

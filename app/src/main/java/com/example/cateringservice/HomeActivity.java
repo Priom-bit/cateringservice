@@ -23,6 +23,7 @@ import android.widget.TextView;
 
 import com.denzcoskun.imageslider.ImageSlider;
 import com.denzcoskun.imageslider.models.SlideModel;
+import com.example.cateringservice.manager.AppManager;
 import com.example.cateringservice.models.ProductInfo;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -43,7 +44,7 @@ public class HomeActivity extends AppCompatActivity {
     List<ProductInfo> productInfoList;
     List<SlideModel> slideModels;
     String mTitle[]={"Drinks","Breakfast","Lunch"};
-    String mDescription[]={"Drinks Description","Breakfast Description","Lunch Description"};
+    String mDescription[]={"Refresh yourself!","kick-starts your metabolism","Take the second meal of the day"};
     int images[]={R.drawable.drinks,R.drawable.breakfast,R.drawable.lunch};
 
     @Override
@@ -146,15 +147,11 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void ClickMenu(View view){
-
         openDrawer(drawerLayout);
-
     }
 
     public static void openDrawer(DrawerLayout drawerLayout) {
-
         drawerLayout.openDrawer(GravityCompat.START);
-
     }
 
     public void ClickLogo(View view){
@@ -189,7 +186,7 @@ public class HomeActivity extends AppCompatActivity {
         builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
+                AppManager.getInstance().setLogOut(activity.getApplicationContext());
                 activity.startActivity(new Intent(activity.getApplicationContext(), Login_Form.class));
                 activity.finishAffinity();
             }

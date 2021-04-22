@@ -21,17 +21,14 @@ public class BreakfastDetails extends AppCompatActivity {
     private final String TAG = BreakfastDetails.class.getSimpleName();
 
     RecyclerView recyclerView;
-    TextView value;
 
     List<ProductInfo> productInfoList;
-    int count = 0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_breakfast_details);
-
-        value = findViewById(R.id.value);
 
         recyclerView =findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
@@ -83,16 +80,5 @@ public class BreakfastDetails extends AppCompatActivity {
 
     }
 
-    public void incrementBtn(View v){
-
-        count++;
-        value.setText("" + count);
     }
 
-    public void decrementBtn(View v){
-
-        if(count <= 0) count = 0;
-        else count--;
-        value.setText("" + count);
-    }
-}

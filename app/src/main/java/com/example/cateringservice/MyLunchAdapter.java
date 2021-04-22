@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -17,11 +18,11 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 public class MyLunchAdapter extends RecyclerView.Adapter<MyLunchAdapter.ViewHolder> {
-    List<ProductInfo> myLunchDescription;
+    List<ProductInfo> productInfoList;
     Context context;
 
-    public MyLunchAdapter(List<ProductInfo> lunchDescriptions, LunchDetails activity) {
-        this.myLunchDescription=lunchDescriptions;
+    public MyLunchAdapter(List<ProductInfo> productInfoList, LunchDetails activity) {
+        this.productInfoList=productInfoList;
         this.context=activity;
     }
 
@@ -35,33 +36,46 @@ public class MyLunchAdapter extends RecyclerView.Adapter<MyLunchAdapter.ViewHold
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyLunchAdapter.ViewHolder holder, int position) {
-        final ProductInfo productInfo=myLunchDescription.get(position);
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        final ProductInfo productInfo=productInfoList.get(position);
         holder.textViewName.setText(productInfo.productName);
         holder.textViewdescription.setText(productInfo.description);
-        Picasso.get().load(productInfo.imageUrl).into(holder.lunchImage);
-        holder.textViewLunchPrice.setText(productInfo.price.toString());
+        Picasso.get().load(productInfo.imageUrl).placeholder(R.drawable.loading_animated).into(holder.lunchImage);
+        holder.textViewLunchPrice.setText(productInfo.price.toString() + " tk");
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context,productInfo.productName,Toast.LENGTH_SHORT).show();
+
             }
+        });
+        holder.incrementButton.setOnClickListener(view -> {
+            holder.incrementBtn(position);
+        });
+
+        holder.decrementButton.setOnClickListener(view -> {
+            holder.decrementBtn(position);
         });
 
 
     }
 
     @Override
-    public int getItemCount() {
-        return myLunchDescription.size();
-    }
+    public int getItemCount() { return productInfoList.size(); }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
         ImageView lunchImage;
         TextView textViewName;
         TextView textViewdescription;
         TextView textViewLunchPrice;
+        TextView lunchTotalPrice;
+
+        ImageButton incrementButton;
+        TextView numberOfLunchProducts;
+        ImageButton decrementButton;
+        TextView totalPrice;
+
+        int count = 0;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -69,7 +83,32 @@ public class MyLunchAdapter extends RecyclerView.Adapter<MyLunchAdapter.ViewHold
             textViewName=itemView.findViewById(R.id.lunchname);
             textViewdescription=itemView.findViewById(R.id.lunchdescription);
             textViewLunchPrice=itemView.findViewById(R.id.lunchprice);
+            lunchTotalPrice = itemView.findViewById(R.id.lunchTotalPrice);
+            incrementButton = itemView.findViewById(R.id.lunchincrementBtn);
+            numberOfLunchProducts = itemView.findViewById(R.id.numberOfLunchProducts);
+            decrementButton = itemView.findViewById(R.id.lunchdecrementBtn);
+            totalPrice = itemView.findViewById(R.id.lunchTotalPrice);
         }
+        public void incrementBtn(int position){
+
+            count++;
+            numberOfLunchProducts.setText("" + count);
+            updateFinalPrice(position);
+        }
+
+        public void decrementBtn(int position){
+
+            if(count <= 0) count = 0;
+            else count--;
+            numberOfLunchProducts.setText("" + count);
+            updateFinalPrice(position);
+        }
+
+        public void updateFinalPrice(int position) {
+            ProductInfo productInfo = productInfoList.get(position);
+            totalPrice.setText("" + (productInfo.price*count) + " tk");
+        }
+
 
     }
 }

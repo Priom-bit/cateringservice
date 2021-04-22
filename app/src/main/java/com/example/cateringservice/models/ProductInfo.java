@@ -23,4 +23,17 @@ public class ProductInfo {
 
         return productInfo;
     }
+
+    public static ProductInfo getTestProduct(int _id) {
+        ProductInfo productInfo = new ProductInfo();
+        productInfo.id = _id;
+        productInfo.productName = "Product " + _id;
+        productInfo.description = "Test description";
+        productInfo.imageUrl = "https://catering-service-48379.web.app/images/egg_paratha.jpg";
+        productInfo.price = 20;
+        productInfo.discount = -1;
+        productInfo.size = "Testing";
+
+        return productInfo;
+    }
 }
