@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -74,5 +75,10 @@ public class DrinksDetails extends AppCompatActivity {
     private void loadListView() {
         MyDrinksAdapter myDrinksAdapter=new MyDrinksAdapter(productInfoList, DrinksDetails.this);
         recyclerView.setAdapter(myDrinksAdapter);
+    }
+
+    public void cartButtonClicked(View view) {
+        Intent intent = new Intent(DrinksDetails.this, CartDetails.class);
+        startActivity(intent);
     }
 }

@@ -5,10 +5,13 @@ import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.example.cateringservice.Services;
+import com.example.cateringservice.models.ProductInfo;
 import com.example.cateringservice.models.User;
 import com.google.gson.Gson;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class AppManager {
@@ -18,6 +21,9 @@ public class AppManager {
     public static final String LoggedInKey = "LoggedInKey";
 
     public User userProfile = new User();
+    public List<ProductInfo> selectedDrinksList = new ArrayList<>();
+    public List<ProductInfo> selectedBreakfastList = new ArrayList<>();
+    public List<ProductInfo> selectedLunchList = new ArrayList<>();
 
     private AppManager() {
         Log.v(TAG, "Services constructor created");

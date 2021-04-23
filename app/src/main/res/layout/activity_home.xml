@@ -48,6 +48,7 @@
                android:layout_marginRight="20dp"
                android:background="@color/colorPrimaryDark"
                android:src="@drawable/cart_gray"
+               android:tint="@color/primaryWhiteColor"
                android:contentDescription="cart"
                android:onClick="cartButtonClicked" />
        </RelativeLayout>

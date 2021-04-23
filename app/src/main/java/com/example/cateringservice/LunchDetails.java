@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -78,6 +79,11 @@ public class LunchDetails extends AppCompatActivity {
         recyclerView.setAdapter(myLunchAdapter);
 
 
+    }
+
+    public void cartButtonClicked(View view) {
+        Intent intent = new Intent(LunchDetails.this, CartDetails.class);
+        startActivity(intent);
     }
 }
 

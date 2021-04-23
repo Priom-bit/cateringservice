@@ -40,7 +40,7 @@ public class MyCartAdapter extends RecyclerView.Adapter<MyCartAdapter.ViewHolder
         final ProductInfo productInfo=productInfoList.get(position);
         holder.textViewName.setText(productInfo.productName);
         holder.textViewdescription.setText(productInfo.description);
-        Picasso.get().load(productInfo.imageUrl).into(holder.cartImage);
+        Picasso.get().load(productInfo.imageUrl).placeholder(R.drawable.loading_animated).into(holder.cartImage);
         holder.textViewCartPrice.setText(productInfo.price.toString() + " tk");
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {

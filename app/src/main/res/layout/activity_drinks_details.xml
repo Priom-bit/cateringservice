@@ -24,8 +24,10 @@
         android:layout_marginVertical="@dimen/activity_vertical_margin"
         android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
         android:src="@drawable/cart_gray"
+        android:tint="@color/primaryWhiteColor"
         android:contentDescription="cart"
         android:layout_margin="16dp"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:onClick="cartButtonClicked"/>
 
 </RelativeLayout>

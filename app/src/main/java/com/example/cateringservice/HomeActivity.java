@@ -44,7 +44,7 @@ public class HomeActivity extends AppCompatActivity {
     List<ProductInfo> productInfoList;
     List<SlideModel> slideModels;
     String mTitle[]={"Drinks","Breakfast","Lunch"};
-    String mDescription[]={"Refresh yourself!","kick-starts your metabolism","Take the second meal of the day"};
+    String mDescription[]={"Refresh yourself!","Kick-starts your metabolism","Take the second meal of the day"};
     int images[]={R.drawable.drinks,R.drawable.breakfast,R.drawable.lunch};
 
     @Override

@@ -1,6 +1,7 @@
 package com.example.cateringservice;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,12 +13,14 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.cateringservice.manager.AppManager;
 import com.example.cateringservice.models.ProductInfo;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 public class MyBreakfastAdapter extends RecyclerView.Adapter<MyBreakfastAdapter.ViewHolder> {
+    private final String TAG = MyBreakfastAdapter.class.getSimpleName();
     List<ProductInfo> productInfoList;
     Context context;
 
@@ -107,6 +110,28 @@ public class MyBreakfastAdapter extends RecyclerView.Adapter<MyBreakfastAdapter.
         public void updateFinalPrice(int position) {
             ProductInfo productInfo = productInfoList.get(position);
             totalPrice.setText("" + (productInfo.price*count) + " tk");
+            replaceIfFound(productInfo, position);
+        }
+
+        private void replaceIfFound(ProductInfo _productInfo, int position) {
+            if (count > 0) {
+                boolean isFound = false;
+                for (ProductInfo productInfo : AppManager.getInstance().selectedBreakfastList) {
+                    if (productInfo.id.equals(_productInfo.id)) {
+                        isFound = true;
+                        int index = AppManager.getInstance().selectedBreakfastList.indexOf(productInfo);
+                        AppManager.getInstance().selectedBreakfastList.set(index, _productInfo);
+                    }
+                }
+                if (!isFound) {
+                    AppManager.getInstance().selectedBreakfastList.add(_productInfo);
+                }
+            }
+            else {
+                ProductInfo productInfo = productInfoList.get(position);
+                AppManager.getInstance().selectedBreakfastList.remove(productInfo);
+            }
+            Log.v(TAG, "Nirob test drinks list: " + AppManager.getInstance().selectedBreakfastList.size());
         }
 
     }
