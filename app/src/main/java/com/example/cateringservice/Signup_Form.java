@@ -1,6 +1,5 @@
 package com.example.cateringservice;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -15,7 +14,6 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.Gravity;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -25,9 +23,6 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.kaopiz.kprogresshud.KProgressHUD;
@@ -178,31 +173,34 @@ public class Signup_Form extends AppCompatActivity {
                 .setDimAmount(0.5f)
                 .show();
 
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("users")
-                .whereEqualTo("email", mobileoremailField.getText().toString())
-                .limit(1)
-                .get()
-                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                    @Override
-                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                        Log.v(TAG, "Testing email exists: " + queryDocumentSnapshots.size());
-                        if (queryDocumentSnapshots.size() <= 0) {
-                            saveUserDataToFirestore();
-                        }
-                        else {
-                            progressHUD.dismiss();
-                            Toast.makeText(getApplicationContext(), "Email or phone number already exists!", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.v(TAG, "Testing email does not exists");
-                        Toast.makeText(getApplicationContext(), "Error occured: " + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
+        Map<String, String> param1 = new HashMap<>();
+        param1.put("email", mobileoremailField.getText().toString());
+
+        Services.getInstance().getRequest("users", param1, null ,1, new Services.FireStoreCompletionListener() {
+            @Override
+            public void onGetSuccess(QuerySnapshot queryDocumentSnapshots) {
+                Log.v(TAG,"Nirob test service is success and ok");
+                if (queryDocumentSnapshots.size() <= 0) {
+                    saveUserDataToFirestore();
+                }
+                else {
+                    progressHUD.dismiss();
+                    Toast.makeText(getApplicationContext(), "Email or phone number already exists!", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onPostSuccess() {
+                Log.v(TAG,"Nirob test service is success post and ok");
+            }
+
+            @Override
+            public void onFailure(String error) {
+                Log.v(TAG,"Nirob test service is success but not ok; error is: " + error);
+            }
+        });
+
+
     }
 
     public void saveUserDataToFirestore() {
@@ -215,25 +213,25 @@ public class Signup_Form extends AppCompatActivity {
         user.put("password",newpasswordField.getText().toString());
         user.put("gender", selectedGenderIndex == 1 ? "female" : "male");
 
-        Log.v(TAG, "Testing request sent");
-        // Add a new document with a generated ID
-        db.collection("users")
-                .add(user)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        Log.v(TAG, "Testing DocumentSnapshot added with ID: " + documentReference.getId());
-                        progressHUD.dismiss();
-                        startActivity(new Intent(getApplicationContext(),Login_Form.class));
-                        finish();
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.v(TAG, "Testing Error adding document error: ", e);
-                        progressHUD.dismiss();
-                    }
-                });
+        Services.getInstance().postRequest("users", user, new Services.FireStoreCompletionListener() {
+            @Override
+            public void onGetSuccess(QuerySnapshot querySnapshots) {
+
+            }
+
+            @Override
+            public void onPostSuccess() {
+                Log.v(TAG, "Testing DocumentSnapshot added");
+                progressHUD.dismiss();
+                startActivity(new Intent(getApplicationContext(),Login_Form.class));
+                finish();
+            }
+
+            @Override
+            public void onFailure(String error) {
+                Log.v(TAG, "Testing Error adding document error: " + error);
+                progressHUD.dismiss();
+            }
+        });
     }
 }

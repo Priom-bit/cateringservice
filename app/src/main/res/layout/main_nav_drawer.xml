@@ -13,9 +13,10 @@
         android:src="@drawable/ac_logo"/>
 
     <TextView
+        android:id="@+id/nav_drawer_email_id"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="arpriom@gmail.com"
+        android:text=""
         android:textSize="20sp"
         android:textStyle="bold"
         android:textAlignment="center"

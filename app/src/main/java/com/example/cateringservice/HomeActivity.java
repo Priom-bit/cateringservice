@@ -16,16 +16,18 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.denzcoskun.imageslider.ImageSlider;
 import com.denzcoskun.imageslider.models.SlideModel;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.example.cateringservice.manager.AppManager;
+import com.example.cateringservice.models.ProductInfo;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.kaopiz.kprogresshud.KProgressHUD;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,8 +37,14 @@ public class HomeActivity extends AppCompatActivity {
 
     DrawerLayout drawerLayout;
     ListView listView;
+    ImageSlider imageSlider;
+
+    KProgressHUD progressHUD;
+
+    List<ProductInfo> productInfoList;
+    List<SlideModel> slideModels;
     String mTitle[]={"Drinks","Breakfast","Lunch"};
-    String mDescription[]={"Drinks Description","Breakfast Description","Lunch Description"};
+    String mDescription[]={"Refresh yourself!","Kick-starts your metabolism","Take the second meal of the day"};
     int images[]={R.drawable.drinks,R.drawable.breakfast,R.drawable.lunch};
 
     @Override
@@ -45,41 +53,23 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
 
         drawerLayout=findViewById(R.id.homeDrawerLayoutId);
-        ImageSlider imageSlider = findViewById(R.id.slider);
-
-        List<SlideModel> slideModels =new ArrayList<>();
-        slideModels.add(new SlideModel(R.drawable.burger_slider,"50% OFF"));
-        slideModels.add(new SlideModel(R.drawable.shawarma_slider,"BUY 1 GET 1 OFFER"));
-        slideModels.add(new SlideModel(R.drawable.pizza_slider,"20% OFF"));
-        imageSlider.setImageList(slideModels,true);
-        imageSlider.stopSliding();
-
-        imageSlider.setVisibility(View.INVISIBLE);
-
-        Log.v(TAG, "Testing Home");
-
-
+        imageSlider = findViewById(R.id.slider);
+        slideModels = new ArrayList<>();
         listView=findViewById(R.id.listView);
 
         MyAdapter adapter=new MyAdapter(this,mTitle,mDescription,images);
         listView.setAdapter(adapter);
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if(position==0) {
-                    //Toast.makeText(HomeActivity.this, "Drinks Description", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(getApplicationContext(), DrinksDetails.class));
-                }
-                else if(position==1) {
-//                    Toast.makeText(HomeActivity.this, "Breakfast Description", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(getApplicationContext(), BreakfastDetails.class));
-                }
-                else if(position==2) {
-                   // Toast.makeText(HomeActivity.this, "Lunch Description", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(getApplicationContext(), LunchDetails.class));
+        listView.setOnItemClickListener((parent, view, position, id) -> {
+            if(position==0) {
+                startActivity(new Intent(getApplicationContext(), DrinksDetails.class));
+            }
+            else if(position==1) {
+                startActivity(new Intent(getApplicationContext(), BreakfastDetails.class));
+            }
+            else if(position==2) {
+                startActivity(new Intent(getApplicationContext(), LunchDetails.class));
 
-                }
             }
         });
 
@@ -87,18 +77,86 @@ public class HomeActivity extends AppCompatActivity {
 //        cartButton.setOnClickListener(v -> {
 //            //startActivity(new Intent(getApplicationContext(), LunchDetails.class));
 //        });
+
+        AppManager.getInstance().setGAID(getApplicationContext());
+        AppManager.getInstance().setUserProfile(getApplicationContext());
+
+        TextView navEmailText = findViewById(R.id.nav_drawer_email_id);
+        navEmailText.setText(AppManager.getInstance().userProfile.email);
+        loadDiscountProducts();
+    }
+
+    private void loadDiscountProducts() {
+        progressHUD = KProgressHUD.create(HomeActivity.this)
+                .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
+                .setLabel("Please wait!")
+                .setDetailsLabel("Checking Login Data!")
+                .setCancellable(true)
+                .setAnimationSpeed(2)
+                .setDimAmount(0.5f)
+                .show();
+
+        productInfoList = new ArrayList<>();
+
+        loadProductInfo();
+    }
+
+    private void loadProductInfo() {
+        Services.getInstance().getRequestGreaterThanOrEqual("productInfo", "discount", 0, 10, new Services.FireStoreCompletionListener() {
+            @Override
+            public void onGetSuccess(QuerySnapshot querySnapshots) {
+                progressHUD.dismiss();
+                Log.v(TAG, "Nirob test data: " + querySnapshots.size());
+                for (DocumentSnapshot documentSnapshot : querySnapshots) {
+                    Log.v(TAG,"Nirob test refId: " + documentSnapshot.getId());
+                    ProductInfo productInfo = ProductInfo.getProductInfoFrom(documentSnapshot);
+                    productInfoList.add(productInfo);
+                }
+                loadTopSlider();
+            }
+
+            @Override
+            public void onPostSuccess() {
+
+            }
+
+            @Override
+            public void onFailure(String error) {
+                progressHUD.dismiss();
+            }
+        });
+    }
+
+    private void loadTopSlider() {
+        slideModels.clear();
+
+        for (ProductInfo productInfo : productInfoList) {
+            SlideModel slideModel = new SlideModel(productInfo.imageUrl, getTopSliderTitle(productInfo));
+            slideModels.add(slideModel);
+        }
+        imageSlider.setImageList(slideModels,true);
+        imageSlider.stopSliding();
+    }
+
+    private String getTopSliderTitle(ProductInfo productInfo) {
+        if (productInfo.discount > 0) {
+            return getPercentageOf(productInfo.price, productInfo.discount) + "% OFF";
+        }
+        return "BUY 1 GET 1 FREE";
+    }
+
+    private int getPercentageOf(int price, int discount) {
+        float percentage = (discount*100)/20.0f;
+
+        return (int) Math.ceil(percentage);
     }
 
     public void ClickMenu(View view){
-
         openDrawer(drawerLayout);
-
     }
 
     public static void openDrawer(DrawerLayout drawerLayout) {
-
         drawerLayout.openDrawer(GravityCompat.START);
-
     }
 
     public void ClickLogo(View view){
@@ -133,7 +191,7 @@ public class HomeActivity extends AppCompatActivity {
         builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
+                AppManager.getInstance().setLogOut(activity.getApplicationContext());
                 activity.startActivity(new Intent(activity.getApplicationContext(), Login_Form.class));
                 activity.finishAffinity();
             }

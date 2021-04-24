@@ -9,10 +9,11 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 
+import com.example.cateringservice.manager.AppManager;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 public class SplashActivity extends AppCompatActivity {
-    public static final String MyPREFERENCES = "MyPrefs" ;
+   private final String TAG = SplashActivity.class.getSimpleName();
 
     private FirebaseAnalytics mFirebaseAnalytics;
 
@@ -31,8 +32,7 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     void callAfterSomeTimes() {
-        SharedPreferences sharedPreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
-        Boolean isLoggedIn = sharedPreferences.getBoolean("LoggedInKey", false);
+        Boolean isLoggedIn = AppManager.getInstance().isLoggedIn(getApplicationContext());
         if (isLoggedIn) {
             Intent intent = new Intent(SplashActivity.this, HomeActivity.class);
             startActivity(intent);
