@@ -4,9 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/drawer_layout"
+    android:id="@+id/about_us_drawer_layout"
     tools:context=".AboutUs">
-    
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -14,50 +14,41 @@
 
         <include
             layout="@layout/main_toolbar"/>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Catering Service"
+                android:textSize="50sp"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"/>
 
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="325dp"
-            android:text="Catering Service"
-            android:textSize="50sp"
-            android:textStyle="bold"
-            android:gravity="center"/>
-
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Our app only for DIU students and teachers.And the most interesting thing is our delivery charge is  less than the other delivery charge. "
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:gravity="center"
+                tools:ignore="Suspicious0dp" />
+        </LinearLayout>
     </LinearLayout>
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-
-
-       <TextView
-           android:layout_width="match_parent"
-          android:layout_height="590dp"
-           android:text="Our app only for DIU students and teachers.And the most interesting thing is our delivery charge is  less than the other delivery charge. "
-            android:textSize="20sp"
-          android:textStyle="bold"
-           android:gravity="center"
-           tools:ignore="Suspicious0dp" />
-
-
-    </LinearLayout>
-
-
-
-
 
     <RelativeLayout
         android:layout_width="300dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:background="@android:color/white">
-
         <include
             layout="@layout/main_nav_drawer"/>
     </RelativeLayout>
+
+
 
 </androidx.drawerlayout.widget.DrawerLayout>
