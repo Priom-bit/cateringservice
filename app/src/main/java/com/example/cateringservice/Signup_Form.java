@@ -167,7 +167,7 @@ public class Signup_Form extends AppCompatActivity {
         progressHUD = KProgressHUD.create(Signup_Form.this)
                 .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
                 .setLabel("Please wait!")
-                .setDetailsLabel("Checking Login Data!")
+                .setDetailsLabel("Registration is progressing!")
                 .setCancellable(true)
                 .setAnimationSpeed(2)
                 .setDimAmount(0.5f)

@@ -90,7 +90,7 @@ public class HomeActivity extends AppCompatActivity {
         progressHUD = KProgressHUD.create(HomeActivity.this)
                 .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
                 .setLabel("Please wait!")
-                .setDetailsLabel("Checking Login Data!")
+                .setDetailsLabel("Checking Offers!")
                 .setCancellable(true)
                 .setAnimationSpeed(2)
                 .setDimAmount(0.5f)

@@ -43,7 +43,7 @@ public class DrinksDetails extends AppCompatActivity {
         KProgressHUD progressHUD = KProgressHUD.create(DrinksDetails.this)
                 .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
                 .setLabel("Please wait!")
-                .setDetailsLabel("Checking Login Data!")
+                .setDetailsLabel("Loading Drinks Data!")
                 .setCancellable(true)
                 .setAnimationSpeed(2)
                 .setDimAmount(0.5f)
