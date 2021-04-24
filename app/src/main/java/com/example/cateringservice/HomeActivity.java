@@ -78,6 +78,7 @@ public class HomeActivity extends AppCompatActivity {
 //            //startActivity(new Intent(getApplicationContext(), LunchDetails.class));
 //        });
 
+        AppManager.getInstance().setGAID(getApplicationContext());
         AppManager.getInstance().setUserProfile(getApplicationContext());
 
         TextView navEmailText = findViewById(R.id.nav_drawer_email_id);

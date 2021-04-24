@@ -46,6 +46,8 @@ public class MyDrinksAdapter extends RecyclerView.Adapter<MyDrinksAdapter.ViewHo
         holder.textViewdescription.setText(productInfo.description);
         Picasso.get().load(productInfo.imageUrl).placeholder(R.drawable.loading_animated).into(holder.drinksImage);
         holder.textViewDrinkPrice.setText(productInfo.price.toString() + " tk");
+        holder.numberOfDrinkProducts.setText(Integer.toString(productInfo.count));
+        holder.totalPrice.setText("" + (productInfo.price*productInfo.count) + " tk");
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,14 +76,11 @@ public class MyDrinksAdapter extends RecyclerView.Adapter<MyDrinksAdapter.ViewHo
         TextView textViewName;
         TextView textViewdescription;
         TextView textViewDrinkPrice;
-        TextView drinksTotalPrice;
 
         ImageButton incrementButton;
         TextView numberOfDrinkProducts;
         ImageButton decrementButton;
         TextView totalPrice;
-
-        int count = 0;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -89,7 +88,6 @@ public class MyDrinksAdapter extends RecyclerView.Adapter<MyDrinksAdapter.ViewHo
             textViewName=itemView.findViewById(R.id.drinksname);
             textViewdescription=itemView.findViewById(R.id.drinksdescription);
             textViewDrinkPrice = itemView.findViewById(R.id.drinksPrice);
-            drinksTotalPrice = itemView.findViewById(R.id.drinksTotalPrice);
             incrementButton = itemView.findViewById(R.id.drinkIncrementBtn);
             numberOfDrinkProducts = itemView.findViewById(R.id.numberOfDrinkProducts);
             decrementButton = itemView.findViewById(R.id.drinkDecrementBtn);
@@ -97,28 +95,29 @@ public class MyDrinksAdapter extends RecyclerView.Adapter<MyDrinksAdapter.ViewHo
         }
 
         public void incrementBtn(int position){
-
-            count++;
-            numberOfDrinkProducts.setText("" + count);
+            ProductInfo productInfo = productInfoList.get(position);
+            productInfo.count++;
+            numberOfDrinkProducts.setText("" + productInfo.count);
             updateFinalPrice(position);
         }
 
         public void decrementBtn(int position){
 
-            if(count <= 0) count = 0;
-            else count--;
-            numberOfDrinkProducts.setText("" + count);
+            ProductInfo productInfo = productInfoList.get(position);
+            if(productInfo.count <= 0) productInfo.count = 0;
+            else productInfo.count--;
+            numberOfDrinkProducts.setText("" + productInfo.count);
             updateFinalPrice(position);
         }
 
         public void updateFinalPrice(int position) {
             ProductInfo productInfo = productInfoList.get(position);
-            totalPrice.setText("" + (productInfo.price*count) + " tk");
+            totalPrice.setText("" + (productInfo.price*productInfo.count) + " tk");
             replaceIfFound(productInfo, position);
         }
 
         private void replaceIfFound(ProductInfo _productInfo, int position) {
-            if (count > 0) {
+            if (_productInfo.count > 0) {
                 boolean isFound = false;
                 for (ProductInfo productInfo : AppManager.getInstance().selectedDrinksList) {
                     if (productInfo.id.equals(_productInfo.id)) {

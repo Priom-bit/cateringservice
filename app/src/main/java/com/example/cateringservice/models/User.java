@@ -12,8 +12,8 @@ public class User {
     public static User getUserFrom(DocumentSnapshot documentSnapshot) {
         User user = new  User();
         user.documentId = documentSnapshot.getId();
-        user.firstName = documentSnapshot.getString("firstName");
-        user.lastName = documentSnapshot.getString("lastName");
+        user.firstName = documentSnapshot.getString("firstname");
+        user.lastName = documentSnapshot.getString("lastname");
         user.email = documentSnapshot.getString("email");
         user.gender = documentSnapshot.getString("gender");
 

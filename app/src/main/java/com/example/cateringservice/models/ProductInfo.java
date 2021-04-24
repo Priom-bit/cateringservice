@@ -10,6 +10,7 @@ public class ProductInfo {
     public Integer price;
     public Integer discount;
     public String size;
+    public int count = 0;
 
     public static ProductInfo getProductInfoFrom(DocumentSnapshot documentSnapshot) {
         ProductInfo productInfo = new ProductInfo();

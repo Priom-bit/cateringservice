@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import com.example.cateringservice.manager.AppManager;
 import com.example.cateringservice.models.ProductInfo;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -58,7 +59,13 @@ public class LunchDetails extends AppCompatActivity {
                 Log.v(TAG, "Nirob test drinks size: " + querySnapshots.size());
                 for (QueryDocumentSnapshot documentSnapshot : querySnapshots) {
                     ProductInfo productInfo = ProductInfo.getProductInfoFrom(documentSnapshot);
-                    productInfoList.add(productInfo);
+                    ProductInfo selectedProductInfo = AppManager.getInstance().getProductIfExistInLunch(productInfo);
+                    if (selectedProductInfo != null) {
+                        productInfoList.add(selectedProductInfo);
+                    }
+                    else {
+                        productInfoList.add(productInfo);
+                    }
                 }
                 loadListView();
             }

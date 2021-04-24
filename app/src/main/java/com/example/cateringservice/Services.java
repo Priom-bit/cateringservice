@@ -135,6 +135,7 @@ public class Services {
         database.collection(collectionName)
         .add(user)
         .addOnSuccessListener(queryDocumentSnapshots -> {
+            Log.v(TAG, "Nirob test documents: " + queryDocumentSnapshots.toString());
             listener.onPostSuccess();
         }).addOnFailureListener(e -> {
             listener.onFailure(e.getLocalizedMessage());

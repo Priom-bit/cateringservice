@@ -45,6 +45,8 @@ public class MyLunchAdapter extends RecyclerView.Adapter<MyLunchAdapter.ViewHold
         holder.textViewdescription.setText(productInfo.description);
         Picasso.get().load(productInfo.imageUrl).placeholder(R.drawable.loading_animated).into(holder.lunchImage);
         holder.textViewLunchPrice.setText(productInfo.price.toString() + " tk");
+        holder.numberOfLunchProducts.setText(Integer.toString(productInfo.count));
+        holder.totalPrice.setText("" + (productInfo.price*productInfo.count) + " tk");
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,14 +73,11 @@ public class MyLunchAdapter extends RecyclerView.Adapter<MyLunchAdapter.ViewHold
         TextView textViewName;
         TextView textViewdescription;
         TextView textViewLunchPrice;
-        TextView lunchTotalPrice;
 
         ImageButton incrementButton;
         TextView numberOfLunchProducts;
         ImageButton decrementButton;
         TextView totalPrice;
-
-        int count = 0;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -86,35 +85,36 @@ public class MyLunchAdapter extends RecyclerView.Adapter<MyLunchAdapter.ViewHold
             textViewName=itemView.findViewById(R.id.lunchname);
             textViewdescription=itemView.findViewById(R.id.lunchdescription);
             textViewLunchPrice=itemView.findViewById(R.id.lunchprice);
-            lunchTotalPrice = itemView.findViewById(R.id.lunchTotalPrice);
             incrementButton = itemView.findViewById(R.id.lunchincrementBtn);
             numberOfLunchProducts = itemView.findViewById(R.id.numberOfLunchProducts);
             decrementButton = itemView.findViewById(R.id.lunchdecrementBtn);
             totalPrice = itemView.findViewById(R.id.lunchTotalPrice);
         }
         public void incrementBtn(int position){
+            ProductInfo productInfo = productInfoList.get(position);
 
-            count++;
-            numberOfLunchProducts.setText("" + count);
+            productInfo.count++;
+            numberOfLunchProducts.setText("" + productInfo.count);
             updateFinalPrice(position);
         }
 
         public void decrementBtn(int position){
+            ProductInfo productInfo = productInfoList.get(position);
 
-            if(count <= 0) count = 0;
-            else count--;
-            numberOfLunchProducts.setText("" + count);
+            if(productInfo.count <= 0) productInfo.count = 0;
+            else productInfo.count--;
+            numberOfLunchProducts.setText("" + productInfo.count);
             updateFinalPrice(position);
         }
 
         public void updateFinalPrice(int position) {
             ProductInfo productInfo = productInfoList.get(position);
-            totalPrice.setText("" + (productInfo.price*count) + " tk");
+            totalPrice.setText("" + (productInfo.price*productInfo.count) + " tk");
             replaceIfFound(productInfo, position);
         }
 
         private void replaceIfFound(ProductInfo _productInfo, int position) {
-            if (count > 0) {
+            if (_productInfo.count > 0) {
                 boolean isFound = false;
                 for (ProductInfo productInfo : AppManager.getInstance().selectedLunchList) {
                     if (productInfo.id.equals(_productInfo.id)) {
