@@ -117,6 +117,7 @@ public class CartDetails extends AppCompatActivity {
                     @Override
                     public void run() {
                         Toast.makeText(getApplicationContext(), "Your order is placed successfully!", Toast.LENGTH_SHORT).show();
+                        AppManager.getInstance().setOrderNumber(getApplicationContext());
                         gotoPreviousPage();
                     }
                 }, 200);

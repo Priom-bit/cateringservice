@@ -88,7 +88,7 @@ public class AppManager {
         return isLoggedIn;
     }
 
-    public void setOrderNumberKey(Context context) {
+    public void setOrderNumber(Context context) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
@@ -97,7 +97,7 @@ public class AppManager {
         editor.putInt(AppManager.OrderNumberKey, orderNumber + 1);
     }
 
-    public int getOrderNumberKey(Context context) {
+    public int getOrderNumber(Context context) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         int orderNumber = sharedPreferences.getInt(AppManager.OrderNumberKey, 1);
 
@@ -152,7 +152,7 @@ public class AppManager {
         orderId = orderId + documentId.substring(documentId.length() - 4, documentId.length() - 1) + "_";
         orderId = orderId + gaid.substring(0, 2);;
         orderId = orderId + gaid.substring(gaid.length() - 3, gaid.length() - 1) + "_";
-        orderId = orderId + AppManager.getInstance().getOrderNumberKey(context);
+        orderId = orderId + AppManager.getInstance().getOrderNumber(context);
 
         return orderId;
     }
