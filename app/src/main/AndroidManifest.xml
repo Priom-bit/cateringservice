@@ -13,25 +13,33 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".CartDetails"
-            android:label="@string/cart_title"/>
-        <activity android:name=".AboutUs"
-            android:label="About Us"/>
+        <activity android:name=".ProductDetails"></activity>
+        <activity
+            android:name=".CartDetails"
+            android:label="@string/cart_title" />
+        <activity
+            android:name=".AboutUs"
+            android:label="About Us" />
         <activity android:name=".NavigationDrawer" />
-        <activity android:name=".LunchDetails"
-            android:label="@string/lunch_title"/>
-        <activity android:name=".BreakfastDetails"
-            android:label="@string/breakfast_title"/>
-        <activity android:name=".DrinksDetails"
-            android:label="@string/drinks_title"/>
-        <activity android:name=".HomeActivity"
+        <activity
+            android:name=".LunchDetails"
+            android:label="@string/lunch_title" />
+        <activity
+            android:name=".BreakfastDetails"
+            android:label="@string/breakfast_title" />
+        <activity
+            android:name=".DrinksDetails"
+            android:label="@string/drinks_title" />
+        <activity
+            android:name=".HomeActivity"
             android:label="Home"
-            android:launchMode="singleTask"/>
+            android:launchMode="singleTask" />
         <activity android:name=".Login_Form" />
         <activity android:name=".Signup_Form" />
         <activity android:name=".SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
