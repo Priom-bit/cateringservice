@@ -148,8 +148,8 @@ public class AppManager {
         String orderId = "";
         String documentId = AppManager.getInstance().userProfile.documentId;
         String gaid = AppManager.getInstance().gaid;
-        orderId = orderId + documentId.substring(0,3);
-        orderId = orderId + documentId.substring(documentId.length() - 4, documentId.length() - 1) + "_";
+        orderId = orderId + (documentId.length() > 4 ? documentId.substring(0,3) : "");
+        orderId = orderId + (documentId.length() > 4 ? documentId.substring(documentId.length() - 4, documentId.length() - 1) : "") + "_";
         orderId = orderId + gaid.substring(0, 2);;
         orderId = orderId + gaid.substring(gaid.length() - 3, gaid.length() - 1) + "_";
         orderId = orderId + AppManager.getInstance().getOrderNumber(context);

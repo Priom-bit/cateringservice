@@ -84,12 +84,21 @@ public class CartDetails extends AppCompatActivity {
         for (ProductInfo productInfo : allSelectedProductList) {
             Map<String, Object> product = new HashMap<>();
             product.put("productid", productInfo.id);
+            product.put("productname", productInfo.productName);
+            product.put("description", productInfo.description);
+            product.put("price", productInfo.price);
+            product.put("discount", productInfo.discount);
+            product.put("imageUrl", productInfo.imageUrl);
+            product.put("size", productInfo.size);
             product.put("count", productInfo.count);
             products.add(product);
         }
         orderMap.put("products", products);
         order.put("order", orderMap);
         order.put("orderid", AppManager.getInstance().getGeneratedOrderId(getApplicationContext()));
+        order.put("userid", AppManager.getInstance().userProfile.documentId);
+        order.put("useremail", AppManager.getInstance().userProfile.email);
+        order.put("username", AppManager.getInstance().userProfile.firstName + " " + AppManager.getInstance().userProfile.lastName);
 
         KProgressHUD progressHUD = KProgressHUD.create(CartDetails.this)
                 .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
