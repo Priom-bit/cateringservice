@@ -88,7 +88,7 @@ public class CartDetails extends AppCompatActivity {
             product.put("description", productInfo.description);
             product.put("price", productInfo.price);
             product.put("discount", productInfo.discount);
-            product.put("imageUrl", productInfo.imageUrl);
+            product.put("imageurl", productInfo.imageUrl);
             product.put("size", productInfo.size);
             product.put("count", productInfo.count);
             products.add(product);

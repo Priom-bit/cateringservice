@@ -93,8 +93,8 @@ public class AppManager {
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
         int orderNumber = sharedPreferences.getInt(AppManager.OrderNumberKey, 1);
-
         editor.putInt(AppManager.OrderNumberKey, orderNumber + 1);
+        editor.apply();
     }
 
     public int getOrderNumber(Context context) {
