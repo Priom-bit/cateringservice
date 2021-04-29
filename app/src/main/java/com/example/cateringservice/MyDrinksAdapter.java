@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cateringservice.manager.AppManager;
 import com.example.cateringservice.models.ProductInfo;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.squareup.picasso.Picasso;
 
 import java.net.URL;
@@ -24,11 +25,15 @@ import java.util.List;
 public class MyDrinksAdapter extends RecyclerView.Adapter<MyDrinksAdapter.ViewHolder> {
     private final String TAG = MyDrinksAdapter.class.getSimpleName();
     List<ProductInfo> productInfoList;
-    Context context;
+    CSConstants.RecyclerViewOnClickListener itemClickListener;
 
-    public MyDrinksAdapter(List<ProductInfo> productInfoList, DrinksDetails activity) {
+    public interface DrinksOnClickListener {
+        void OnItemClicked(int position);
+    }
+
+    public MyDrinksAdapter(List<ProductInfo> productInfoList, CSConstants.RecyclerViewOnClickListener listener) {
         this.productInfoList = productInfoList;
-        this.context=activity;
+        this.itemClickListener = listener;
     }
 
     @NonNull
@@ -52,10 +57,7 @@ public class MyDrinksAdapter extends RecyclerView.Adapter<MyDrinksAdapter.ViewHo
 
         holder.itemView.setOnClickListener(v -> {
             Log.v(TAG, "You clicked at: position: " + position);
-            ProductInfo productInfo1 = productInfoList.get(position);
-            Intent intent = new Intent(v.getContext(), ProductDetails.class);
-            intent.putExtra("productDetails", productInfo1);
-            v.getContext().startActivity(intent);
+            this.itemClickListener.OnItemClicked(position);
         });
 
         holder.incrementButton.setOnClickListener(view -> {

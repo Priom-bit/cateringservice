@@ -1,5 +1,6 @@
 package com.example.cateringservice;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -25,6 +26,7 @@ public class LunchDetails extends AppCompatActivity {
     RecyclerView recyclerView;
 
     List<ProductInfo> productInfoList;
+    MyLunchAdapter myLunchAdapter;
 
 
     @Override
@@ -40,6 +42,30 @@ public class LunchDetails extends AppCompatActivity {
 
         productInfoList = new ArrayList<>();
         loadLunchData();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.v(TAG, "Nirob test onActivityResult");
+        if (requestCode == CSConstants.LUNCH_ACTIVITY_REQUEST_CODE && resultCode == CSConstants.ACTIVITY_RESULT_CODE && data.hasExtra("productInfoDetails")) {
+            ProductInfo _productInfo = (ProductInfo) data.getSerializableExtra("productInfoDetails");
+            ProductInfo productInfo = getProductOfSameId(_productInfo);
+            if (productInfo != null) {
+                int index = productInfoList.indexOf(productInfo);
+                productInfoList.set(index, _productInfo);
+                myLunchAdapter.notifyDataSetChanged();
+            }
+        }
+    }
+
+    private ProductInfo getProductOfSameId(ProductInfo productInfo) {
+        for (ProductInfo productInfo1 : productInfoList) {
+            if (productInfo.id.equals(productInfo1.id)) {
+                return productInfo1;
+            }
+        }
+        return null;
     }
 
     private void loadLunchData() {
@@ -82,7 +108,15 @@ public class LunchDetails extends AppCompatActivity {
         });
     }
     private void loadListView() {
-        MyLunchAdapter myLunchAdapter = new MyLunchAdapter(productInfoList, LunchDetails.this);
+        myLunchAdapter = new MyLunchAdapter(productInfoList, new CSConstants.RecyclerViewOnClickListener() {
+            @Override
+            public void OnItemClicked(int position) {
+                ProductInfo productInfo = productInfoList.get(position);
+                Intent intent = new Intent(LunchDetails.this, ProductDetails.class);
+                intent.putExtra("productDetails", productInfo);
+                startActivityForResult(intent, CSConstants.LUNCH_ACTIVITY_REQUEST_CODE);
+            }
+        });
         recyclerView.setAdapter(myLunchAdapter);
 
 

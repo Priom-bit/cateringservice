@@ -1,5 +1,6 @@
 package com.example.cateringservice;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -8,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
 
@@ -26,6 +28,7 @@ public class DrinksDetails extends AppCompatActivity {
     RecyclerView recyclerView;
 
     List<ProductInfo> productInfoList;
+    MyDrinksAdapter myDrinksAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,12 +47,24 @@ public class DrinksDetails extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         Log.v(TAG, "Nirob test onActivityResult");
+        if (requestCode == CSConstants.DRINK_ACTIVITY_REQUEST_CODE && resultCode == CSConstants.ACTIVITY_RESULT_CODE && data.hasExtra("productInfoDetails")) {
+            ProductInfo _productInfo = (ProductInfo) data.getSerializableExtra("productInfoDetails");
+            ProductInfo productInfo = getProductOfSameId(_productInfo);
+            if (productInfo != null) {
+                int index = productInfoList.indexOf(productInfo);
+                productInfoList.set(index, _productInfo);
+                myDrinksAdapter.notifyDataSetChanged();
+            }
+        }
     }
 
-    @Override
-    public void onActivityReenter(int resultCode, Intent data) {
-        super.onActivityReenter(resultCode, data);
-        Log.v(TAG, "Nirob test onActivityReenter");
+    private ProductInfo getProductOfSameId(ProductInfo productInfo) {
+        for (ProductInfo productInfo1 : productInfoList) {
+            if (productInfo.id.equals(productInfo1.id)) {
+                return productInfo1;
+            }
+        }
+        return null;
     }
 
     private void loadDrinksData() {
@@ -93,7 +108,16 @@ public class DrinksDetails extends AppCompatActivity {
     }
 
     private void loadListView() {
-        MyDrinksAdapter myDrinksAdapter=new MyDrinksAdapter(productInfoList, DrinksDetails.this);
+        myDrinksAdapter = new MyDrinksAdapter(productInfoList, new CSConstants.RecyclerViewOnClickListener() {
+            @Override
+            public void OnItemClicked(int position) {
+                Log.v(TAG, "Nirob test OnItemClicked psss: " + position);
+                ProductInfo productInfo1 = productInfoList.get(position);
+                Intent intent = new Intent(DrinksDetails.this, ProductDetails.class);
+                intent.putExtra("productDetails", productInfo1);
+                startActivityForResult(intent, CSConstants.DRINK_ACTIVITY_REQUEST_CODE);
+            }
+        });
         recyclerView.setAdapter(myDrinksAdapter);
     }
 

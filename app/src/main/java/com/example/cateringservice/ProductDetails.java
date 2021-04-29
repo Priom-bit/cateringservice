@@ -110,8 +110,8 @@ public class ProductDetails extends AppCompatActivity {
             replaceIfFoundLunch(productInfo);
 
         Intent data = new Intent();
-        data.putExtra("myData1", productInfo);
-        setResult(CSConstants.HOME_ACTIVITY_RESULT_CODE, data);
+        data.putExtra("productInfoDetails", productInfo);
+        setResult(CSConstants.ACTIVITY_RESULT_CODE, data);
     }
 
     private int getProductType() {
@@ -147,41 +147,41 @@ public class ProductDetails extends AppCompatActivity {
     private void replaceIfFoundBreakfast(ProductInfo _productInfo) {
         if (_productInfo.count > 0) {
             boolean isFound = false;
-            for (ProductInfo productInfo : AppManager.getInstance().selectedDrinksList) {
+            for (ProductInfo productInfo : AppManager.getInstance().selectedBreakfastList) {
                 if (productInfo.id.equals(_productInfo.id)) {
                     isFound = true;
-                    int index = AppManager.getInstance().selectedDrinksList.indexOf(productInfo);
-                    AppManager.getInstance().selectedDrinksList.set(index, _productInfo);
+                    int index = AppManager.getInstance().selectedBreakfastList.indexOf(productInfo);
+                    AppManager.getInstance().selectedBreakfastList.set(index, _productInfo);
                 }
             }
             if (!isFound) {
-                AppManager.getInstance().selectedDrinksList.add(_productInfo);
+                AppManager.getInstance().selectedBreakfastList.add(_productInfo);
             }
         }
         else {
-            AppManager.getInstance().selectedDrinksList.remove(productInfo);
+            AppManager.getInstance().selectedBreakfastList.remove(productInfo);
         }
-        Log.v(TAG, "Nirob test drinks list: " + AppManager.getInstance().selectedDrinksList.size());
+        Log.v(TAG, "Nirob test drinks list: " + AppManager.getInstance().selectedBreakfastList.size());
     }
 
     private void replaceIfFoundLunch(ProductInfo _productInfo) {
         if (_productInfo.count > 0) {
             boolean isFound = false;
-            for (ProductInfo productInfo : AppManager.getInstance().selectedDrinksList) {
+            for (ProductInfo productInfo : AppManager.getInstance().selectedLunchList) {
                 if (productInfo.id.equals(_productInfo.id)) {
                     isFound = true;
-                    int index = AppManager.getInstance().selectedDrinksList.indexOf(productInfo);
-                    AppManager.getInstance().selectedDrinksList.set(index, _productInfo);
+                    int index = AppManager.getInstance().selectedLunchList.indexOf(productInfo);
+                    AppManager.getInstance().selectedLunchList.set(index, _productInfo);
                 }
             }
             if (!isFound) {
-                AppManager.getInstance().selectedDrinksList.add(_productInfo);
+                AppManager.getInstance().selectedLunchList.add(_productInfo);
             }
         }
         else {
-            AppManager.getInstance().selectedDrinksList.remove(productInfo);
+            AppManager.getInstance().selectedLunchList.remove(productInfo);
         }
-        Log.v(TAG, "Nirob test drinks list: " + AppManager.getInstance().selectedDrinksList.size());
+        Log.v(TAG, "Nirob test drinks list: " + AppManager.getInstance().selectedLunchList.size());
     }
 
     public void cartButtonClicked(View view) {

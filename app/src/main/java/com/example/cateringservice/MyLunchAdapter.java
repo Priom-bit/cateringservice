@@ -23,11 +23,11 @@ import java.util.List;
 public class MyLunchAdapter extends RecyclerView.Adapter<MyLunchAdapter.ViewHolder> {
     private final String TAG = MyLunchAdapter.class.getSimpleName();
     List<ProductInfo> productInfoList;
-    Context context;
+    CSConstants.RecyclerViewOnClickListener itemClickListener;
 
-    public MyLunchAdapter(List<ProductInfo> productInfoList, LunchDetails activity) {
+    public MyLunchAdapter(List<ProductInfo> productInfoList, CSConstants.RecyclerViewOnClickListener listener) {
         this.productInfoList=productInfoList;
-        this.context=activity;
+        this.itemClickListener = listener;
     }
 
     @NonNull
@@ -53,10 +53,7 @@ public class MyLunchAdapter extends RecyclerView.Adapter<MyLunchAdapter.ViewHold
             @Override
             public void onClick(View v) {
                 Log.v(TAG, "You clicked at: position: " + position);
-                ProductInfo productInfo = productInfoList.get(position);
-                Intent intent = new Intent(v.getContext(), ProductDetails.class);
-                intent.putExtra("productDetails", productInfo);
-                v.getContext().startActivity(intent);
+                itemClickListener.OnItemClicked(position);
             }
         });
         holder.incrementButton.setOnClickListener(view -> {

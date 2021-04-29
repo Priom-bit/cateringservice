@@ -23,11 +23,12 @@ import java.util.List;
 public class MyBreakfastAdapter extends RecyclerView.Adapter<MyBreakfastAdapter.ViewHolder> {
     private final String TAG = MyBreakfastAdapter.class.getSimpleName();
     List<ProductInfo> productInfoList;
-    Context context;
 
-    public MyBreakfastAdapter(List<ProductInfo> productInfoList, BreakfastDetails activity) {
+    CSConstants.RecyclerViewOnClickListener itemClickListener;
+
+    public MyBreakfastAdapter(List<ProductInfo> productInfoList, CSConstants.RecyclerViewOnClickListener listener) {
         this.productInfoList=productInfoList;
-        this.context=activity;
+        this.itemClickListener = listener;
     }
 
     @NonNull
@@ -53,10 +54,7 @@ public class MyBreakfastAdapter extends RecyclerView.Adapter<MyBreakfastAdapter.
             @Override
             public void onClick(View v) {
                 Log.v(TAG, "You clicked at: position: " + position);
-                ProductInfo productInfo = productInfoList.get(position);
-                Intent intent = new Intent(v.getContext(), ProductDetails.class);
-                intent.putExtra("productDetails", productInfo);
-                v.getContext().startActivity(intent);
+                itemClickListener.OnItemClicked(position);
             }
         });
 

@@ -1,5 +1,6 @@
 package com.example.cateringservice;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -25,6 +26,7 @@ public class BreakfastDetails extends AppCompatActivity {
     RecyclerView recyclerView;
 
     List<ProductInfo> productInfoList;
+    MyBreakfastAdapter myBreakfastAdapter;
 
 
     @Override
@@ -38,6 +40,30 @@ public class BreakfastDetails extends AppCompatActivity {
 
         productInfoList = new ArrayList<>();
         loadBreakfastData();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.v(TAG, "Nirob test onActivityResult");
+        if (requestCode == CSConstants.BREAKFAST_ACTIVITY_REQUEST_CODE && resultCode == CSConstants.ACTIVITY_RESULT_CODE && data.hasExtra("productInfoDetails")) {
+            ProductInfo _productInfo = (ProductInfo) data.getSerializableExtra("productInfoDetails");
+            ProductInfo productInfo = getProductOfSameId(_productInfo);
+            if (productInfo != null) {
+                int index = productInfoList.indexOf(productInfo);
+                productInfoList.set(index, _productInfo);
+                myBreakfastAdapter.notifyDataSetChanged();
+            }
+        }
+    }
+
+    private ProductInfo getProductOfSameId(ProductInfo productInfo) {
+        for (ProductInfo productInfo1 : productInfoList) {
+            if (productInfo.id.equals(productInfo1.id)) {
+                return productInfo1;
+            }
+        }
+        return null;
     }
 
     private void loadBreakfastData() {
@@ -83,7 +109,15 @@ public class BreakfastDetails extends AppCompatActivity {
 
 
     private void loadListView() {
-        MyBreakfastAdapter myBreakfastAdapter = new MyBreakfastAdapter(productInfoList, BreakfastDetails.this);
+        myBreakfastAdapter = new MyBreakfastAdapter(productInfoList, new CSConstants.RecyclerViewOnClickListener() {
+            @Override
+            public void OnItemClicked(int position) {
+                ProductInfo productInfo = productInfoList.get(position);
+                Intent intent = new Intent(BreakfastDetails.this, ProductDetails.class);
+                intent.putExtra("productDetails", productInfo);
+                startActivityForResult(intent, CSConstants.BREAKFAST_ACTIVITY_REQUEST_CODE);
+            }
+        });
         recyclerView.setAdapter(myBreakfastAdapter);
 
     }

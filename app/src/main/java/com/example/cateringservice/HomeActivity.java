@@ -82,21 +82,6 @@ public class HomeActivity extends AppCompatActivity {
         loadDiscountProducts();
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == CSConstants.HOME_ACTIVITY_REQUEST_CODE && resultCode == CSConstants.HOME_ACTIVITY_RESULT_CODE && data.hasExtra("myData1")) {
-            ProductInfo productInfo = (ProductInfo) data.getSerializableExtra("myData1");
-            Log.v(TAG, "Nirob test onActivityResult " + requestCode + " : " + resultCode + " pid: " + productInfo.id);
-        }
-    }
-
-    @Override
-    public void onActivityReenter(int resultCode, Intent data) {
-        super.onActivityReenter(resultCode, data);
-        Log.v(TAG, "Nirob test onActivityReenter");
-    }
-
     private void loadDiscountProducts() {
         progressHUD = KProgressHUD.create(HomeActivity.this)
                 .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
@@ -155,8 +140,7 @@ public class HomeActivity extends AppCompatActivity {
                 ProductInfo productInfo = productInfoList.get(i);
                 Intent intent = new Intent(HomeActivity.this, ProductDetails.class);
                 intent.putExtra("productDetails", productInfo);
-                //startActivity(intent);
-                startActivityForResult(intent, CSConstants.HOME_ACTIVITY_REQUEST_CODE);
+                startActivity(intent);
             }
         });
     }
