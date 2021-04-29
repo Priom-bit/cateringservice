@@ -2,7 +2,9 @@ package com.example.cateringservice.models;
 
 import com.google.firebase.firestore.DocumentSnapshot;
 
-public class ProductInfo {
+import java.io.Serializable;
+
+public class ProductInfo implements Serializable {
     public Integer id;
     public String productName;
     public String description;

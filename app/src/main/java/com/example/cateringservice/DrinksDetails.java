@@ -1,5 +1,6 @@
 package com.example.cateringservice;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -37,6 +38,18 @@ public class DrinksDetails extends AppCompatActivity {
 
         productInfoList = new ArrayList<>();
         loadDrinksData();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.v(TAG, "Nirob test onActivityResult");
+    }
+
+    @Override
+    public void onActivityReenter(int resultCode, Intent data) {
+        super.onActivityReenter(resultCode, data);
+        Log.v(TAG, "Nirob test onActivityReenter");
     }
 
     private void loadDrinksData() {

@@ -1,6 +1,7 @@
 package com.example.cateringservice;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -51,7 +52,11 @@ public class MyLunchAdapter extends RecyclerView.Adapter<MyLunchAdapter.ViewHold
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Log.v(TAG, "You clicked at: position: " + position);
+                ProductInfo productInfo = productInfoList.get(position);
+                Intent intent = new Intent(v.getContext(), ProductDetails.class);
+                intent.putExtra("productDetails", productInfo);
+                v.getContext().startActivity(intent);
             }
         });
         holder.incrementButton.setOnClickListener(view -> {

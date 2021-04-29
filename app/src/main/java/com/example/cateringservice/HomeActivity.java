@@ -22,6 +22,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.denzcoskun.imageslider.ImageSlider;
+import com.denzcoskun.imageslider.interfaces.ItemClickListener;
 import com.denzcoskun.imageslider.models.SlideModel;
 import com.example.cateringservice.manager.AppManager;
 import com.example.cateringservice.models.ProductInfo;
@@ -73,17 +74,27 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-//        FloatingActionButton cartButton = findViewById(R.id.home_cart_button);
-//        cartButton.setOnClickListener(v -> {
-//            //startActivity(new Intent(getApplicationContext(), LunchDetails.class));
-//        });
-
         AppManager.getInstance().setGAID(getApplicationContext());
         AppManager.getInstance().setUserProfile(getApplicationContext());
 
         TextView navEmailText = findViewById(R.id.nav_drawer_email_id);
         navEmailText.setText(AppManager.getInstance().userProfile.email);
         loadDiscountProducts();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == CSConstants.HOME_ACTIVITY_REQUEST_CODE && resultCode == CSConstants.HOME_ACTIVITY_RESULT_CODE && data.hasExtra("myData1")) {
+            ProductInfo productInfo = (ProductInfo) data.getSerializableExtra("myData1");
+            Log.v(TAG, "Nirob test onActivityResult " + requestCode + " : " + resultCode + " pid: " + productInfo.id);
+        }
+    }
+
+    @Override
+    public void onActivityReenter(int resultCode, Intent data) {
+        super.onActivityReenter(resultCode, data);
+        Log.v(TAG, "Nirob test onActivityReenter");
     }
 
     private void loadDiscountProducts() {
@@ -134,8 +145,20 @@ public class HomeActivity extends AppCompatActivity {
             SlideModel slideModel = new SlideModel(productInfo.imageUrl, getTopSliderTitle(productInfo));
             slideModels.add(slideModel);
         }
-        imageSlider.setImageList(slideModels,true);
+        imageSlider.setImageList(slideModels, true);
         imageSlider.stopSliding();
+
+        imageSlider.setItemClickListener(new ItemClickListener() {
+            @Override
+            public void onItemSelected(int i) {
+                Log.v(TAG, "Nirob test onItemselected index: " + i);
+                ProductInfo productInfo = productInfoList.get(i);
+                Intent intent = new Intent(HomeActivity.this, ProductDetails.class);
+                intent.putExtra("productDetails", productInfo);
+                //startActivity(intent);
+                startActivityForResult(intent, CSConstants.HOME_ACTIVITY_REQUEST_CODE);
+            }
+        });
     }
 
     private String getTopSliderTitle(ProductInfo productInfo) {

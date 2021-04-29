@@ -1,6 +1,7 @@
 package com.example.cateringservice;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,11 +50,12 @@ public class MyDrinksAdapter extends RecyclerView.Adapter<MyDrinksAdapter.ViewHo
         holder.numberOfDrinkProducts.setText(Integer.toString(productInfo.count));
         holder.totalPrice.setText("" + (productInfo.price*productInfo.count) + " tk");
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
+        holder.itemView.setOnClickListener(v -> {
+            Log.v(TAG, "You clicked at: position: " + position);
+            ProductInfo productInfo1 = productInfoList.get(position);
+            Intent intent = new Intent(v.getContext(), ProductDetails.class);
+            intent.putExtra("productDetails", productInfo1);
+            v.getContext().startActivity(intent);
         });
 
         holder.incrementButton.setOnClickListener(view -> {
