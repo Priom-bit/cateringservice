@@ -153,8 +153,9 @@ public class Login_Form extends AppCompatActivity {
     }
 
     public void loginSuccessfull() {
-        startActivity(new Intent(getApplicationContext(), HomeActivity.class));
         AppManager.getInstance().setLogIn(getApplicationContext());
+        startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+        finish();
     }
 
     public boolean isValidEmail(CharSequence target) {
