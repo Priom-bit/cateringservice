@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.cateringservice.manager.AppManager;
@@ -25,6 +26,7 @@ import java.util.Map;
 public class FinalOrderDetailsActivity extends AppCompatActivity {
     private final String TAG= FinalOrderDetailsActivity.class.getSimpleName();
     private EditText nameEditText, phoneEditText, addressEditText;
+    private TextView subTotalText, discountText, deliveryChargeText, totalText;
     private Button ConfirmOrderBtn;
     List<ProductInfo> allSelectedProductList = new ArrayList<>();
 
@@ -38,7 +40,7 @@ public class FinalOrderDetailsActivity extends AppCompatActivity {
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        ConfirmOrderBtn = (Button) findViewById(R.id.Confirm_final_order_btn);
+        ConfirmOrderBtn = findViewById(R.id.Confirm_final_order_btn);
 
         ConfirmOrderBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -47,17 +49,74 @@ public class FinalOrderDetailsActivity extends AppCompatActivity {
                 confirmFinalOrder();
             }
         });
-        nameEditText =(EditText) findViewById(R.id.shippment_name);
-        phoneEditText =(EditText) findViewById(R.id.shippment_phone_number);
-        addressEditText =(EditText) findViewById(R.id.shippment_address);
+        nameEditText = findViewById(R.id.shippment_name);
+        phoneEditText = findViewById(R.id.shippment_phone_number);
+        addressEditText = findViewById(R.id.shippment_address);
+
+        subTotalText = findViewById(R.id.subTotalValue);
+        discountText = findViewById(R.id.discountValue);
+        deliveryChargeText = findViewById(R.id.deliveryValue);
+        totalText = findViewById(R.id.totalValue);
+
+        loadUserData();
 
     }
+
+    private void loadUserData() {
+        allSelectedProductList=getAllSelectedProducts();
+
+        String userName = AppManager.getInstance().userProfile.firstName + AppManager.getInstance().userProfile.lastName;
+        nameEditText.setText(userName);
+
+        Integer subTotal = getSubTotalPrice();
+        subTotalText.setText(subTotal.toString());
+
+        Integer totalDiscount = getTotalDiscount();
+        discountText.setText(totalDiscount.toString());
+
+        Integer totalDC = getTotalDeliveryCharge();
+        deliveryChargeText.setText(totalDC.toString());
+
+        Integer totalPrice = getTotalPrice();
+        totalText.setText(totalPrice.toString());
+    }
+
     private List<ProductInfo> getAllSelectedProducts() {
         List<ProductInfo> _allSelectedProductList = new ArrayList<>();
         _allSelectedProductList.addAll(AppManager.getInstance().selectedDrinksList);
         _allSelectedProductList.addAll(AppManager.getInstance().selectedBreakfastList);
         _allSelectedProductList.addAll(AppManager.getInstance().selectedLunchList);
         return _allSelectedProductList;
+    }
+
+    private Integer getSubTotalPrice() {
+        Integer totalPrice = 0;
+        for (ProductInfo productInfo: allSelectedProductList) {
+            totalPrice += (productInfo.price*productInfo.count);
+        }
+        return totalPrice;
+    }
+
+    private Integer getTotalDiscount() {
+        Integer totalDiscount = 0;
+        for (ProductInfo productInfo: allSelectedProductList) {
+            if (productInfo.discount>0)
+                totalDiscount += (productInfo.discount*productInfo.count);
+        }
+        return totalDiscount;
+    }
+
+    private Integer getTotalDeliveryCharge() {
+        Integer totalDeliveryCharge = 60; // currently delivery charge is fixed, later we may add extra delivery charge with respect to items.
+        return totalDeliveryCharge;
+    }
+
+    private Integer getTotalPrice() {
+        Integer subTotal = getSubTotalPrice();
+        Integer discount = getTotalDiscount();
+        Integer deliveryCharge = getTotalDeliveryCharge();
+
+        return (subTotal - discount + deliveryCharge);
     }
 
     void confirmFinalOrder(){

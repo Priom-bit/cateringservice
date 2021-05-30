@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -25,6 +26,7 @@ public class CartDetails extends AppCompatActivity {
     RecyclerView recyclerView;
     TextView noItemTextView;
     Button placeOrderBtn;
+    TextView finalPriceTextView;
 
     List<ProductInfo> allSelectedProductList = new ArrayList<>();
 
@@ -44,8 +46,10 @@ public class CartDetails extends AppCompatActivity {
 
         noItemTextView = findViewById(R.id.cartNoitemSelectedId);
         placeOrderBtn = findViewById(R.id.cartPlaceOrderBtnId);
+        finalPriceTextView = findViewById(R.id.final_price);
 
         loadListView();
+        loadTotalPrice();
     }
 
     private void loadListView() {
@@ -68,12 +72,24 @@ public class CartDetails extends AppCompatActivity {
         }
     }
 
+    private void loadTotalPrice() {
+        finalPriceTextView.setText(getTotalPrice().toString());
+    }
+
     private List<ProductInfo> getAllSelectedProducts() {
         List<ProductInfo> _allSelectedProductList = new ArrayList<>();
         _allSelectedProductList.addAll(AppManager.getInstance().selectedDrinksList);
         _allSelectedProductList.addAll(AppManager.getInstance().selectedBreakfastList);
         _allSelectedProductList.addAll(AppManager.getInstance().selectedLunchList);
         return _allSelectedProductList;
+    }
+
+    private Integer getTotalPrice() {
+        Integer totalPrice = 0;
+        for (ProductInfo productInfo: allSelectedProductList) {
+            totalPrice += (productInfo.price*productInfo.count);
+        }
+        return totalPrice;
     }
 
     public void btnPlaceOrderClicked(View view) {
