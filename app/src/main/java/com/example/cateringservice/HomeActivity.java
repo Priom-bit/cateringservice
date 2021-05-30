@@ -2,6 +2,7 @@ package com.example.cateringservice;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -45,13 +46,18 @@ public class HomeActivity extends AppCompatActivity {
     List<ProductInfo> productInfoList;
     List<SlideModel> slideModels;
     String mTitle[]={"Drinks","Breakfast","Lunch"};
-    String mDescription[]={"Refresh yourself!","Kick-starts your metabolism","Take the second meal of the day"};
+    String mDescription[]={"Refresh yourself!","Kick-starts your metabolism!","Take the second meal of the day!"};
     int images[]={R.drawable.drinks,R.drawable.breakfast,R.drawable.lunch};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        ActionBar actionBar =getSupportActionBar();
+        actionBar.setTitle("Home");
+        actionBar.setDisplayShowHomeEnabled(true);
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
         drawerLayout=findViewById(R.id.homeDrawerLayoutId);
         imageSlider = findViewById(R.id.slider);

@@ -5,20 +5,30 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
         android:name="androidx.multidex.MultiDexApplication"
-        tools:replace="android:allowBackup"
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity android:name=".ProductDetails"
-            android:label="Product Details"/>
+        android:theme="@style/AppTheme"
+        tools:replace="android:allowBackup">
+        <activity
+            android:name=".FinalOrderDetailsActivity"
+            android:parentActivityName=".DrinksDetails"
+            android:label="Final Order Details">
+        </activity>
+
+        <activity
+            android:name=".ProductDetails"
+            android:parentActivityName=".DrinksDetails"
+            android:label="Product Details" />
         <activity
             android:name=".CartDetails"
+            android:parentActivityName=".DrinksDetails"
             android:label="@string/cart_title" />
         <activity
             android:name=".AboutUs"
@@ -26,15 +36,19 @@
         <activity android:name=".NavigationDrawer" />
         <activity
             android:name=".LunchDetails"
+            android:parentActivityName=".HomeActivity"
             android:label="@string/lunch_title" />
         <activity
             android:name=".BreakfastDetails"
+            android:parentActivityName=".HomeActivity"
             android:label="@string/breakfast_title" />
         <activity
             android:name=".DrinksDetails"
-            android:label="@string/drinks_title" />
+            android:parentActivityName=".HomeActivity"
+            android:label="Drinks" />
         <activity
             android:name=".HomeActivity"
+            android:parentActivityName=".SplashActivity"
             android:label="Home"
             android:launchMode="singleTask" />
         <activity android:name=".Login_Form" />

@@ -1,5 +1,6 @@
 package com.example.cateringservice;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -34,6 +35,11 @@ public class ProductDetails extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_details);
+
+        ActionBar actionBar =getSupportActionBar();
+        actionBar.setTitle("Product Details");
+        actionBar.setDisplayShowHomeEnabled(true);
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
         imageSlider = findViewById(R.id.slider);
         titleView = findViewById(R.id.details_title);
